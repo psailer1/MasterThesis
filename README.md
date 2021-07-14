@@ -20,6 +20,7 @@
    4. [UseCase3 Branch](#usecase3)
    5. [UseCase4 Branch](#usecase4)
    6. [final_prototype Branch](#finalprototype)
+   7. [Summary Branches](#summarybranches)
 
 <a name="project" />
 
@@ -31,12 +32,15 @@ Was das Projekt überhaupt zeigen soll --> Gibts da ein Deliverable was ich hera
 
 ## Scenarios
 
-Consumer to Producer --> Erklärung wie das Funktioniert
+Scenario 1: Consumer to Producer --> Erklärung wie das Funktioniert
+
+Eher Sequence Diagram oder diese Bilder? 
 
 ![Scenario 1: Actuator to Sensor Solution](/images/scenario1.PNG)
 
-Producer to Consumer --> Erklärung Unterschied Scenario 1
+Scenario 2: Producer to Consumer --> Erklärung Unterschied Scenario 1
 
+Eher Sequence Diagram oder oder diese Bilder? 
 
 ![Scenario 2: Sensor to Actuator Solution](/images/scenario2.PNG)
 
@@ -172,4 +176,17 @@ Java Version: TBD
 [Click here to go to final_prototype Branch](https://github.com/igo3r/MIT4.0/tree/final_prototype)
 
 
+<a name="summarybranches" />
 
+### Summary 
+
+Tabelle machen mit unterschieden 
+
+| Branch | Scenario | IP-Address | Protocol | Required Hardware |
+| -------- | ---------- | ---------- | -------- | ----------------- |
+| Master | Only Arrowhead Coresystems | 127.0.0.1  | HTTPS | 1 Device |
+| Use Case 1 | Scenario 1 | 127.0.0.1  | HTTPS | 1 Device |
+| Use Case 2 | Scenario 2 | 127.0.0.1  | HTTPS | 1 Device |
+| Use Case 3 | Scenario 1 | 127.0.0.1  | HTTP | 1 Device |
+| Use Case 4 | Scenario 2 | 127.0.0.1  | HTTP | 1 Device |
+| Final Prototype | Scenario 2 | 10.20.30.1 - 10.20.30.6 | HTTPS | 6 Devices |
