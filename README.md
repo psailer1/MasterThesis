@@ -87,25 +87,27 @@ Furthermore, these values are logged and saved in a log file, where a differenti
 
 Used Version: Arrowhead Framework 4.1.3
 
---> wie ausführlich hättest du das gerne? Eher so wie in D 3.2. oder so wie in meiner Masterarbeit? 
+The Arrowhead Framework is an IoT framework that helps manage interactions within a CPS. It facilitates the creation of local automation clouds consisting of different devices, different application-specific systems and services to perform automation tasks. Furthermore, the Arrowhead framework offers the possibility to create a boundary between the local cloud and the open internet or external activities. This results in the ability to pair local (on-premise and private) real-time performance and security with simple and cost-effective engineering. Furthermore, it can be used for multi-cloud interactions, which means it also offers scalability. Since Arrowhead is an open-source project written in Java, it can be extended with any functionality needed to support multiple use cases. It should be mentioned that Arrowhead includes various systems, which are listed under the [official Github](https://github.com/arrowhead-f/core-java-spring) of the Arrowhead Consortia. For Arrowhead to work, at least the three core systems Service Registry System, Authorisation System and Orchestration System must be used. Therefore, a database is used to store information about the local cloud. 
 
 <a name="sr" />
 
 #### Service Registry
 
-blabla über SR
+In the first step, the service registry is responsible for ensuring application systems can register and provide their services. This is necessary in order for other application systems in the network to be able to use these services. Furthermore, the service registry can remove these entries from the database or update them if necessary. Finally, it is responsible for allowing application systems to use its look-up functionality to find and use publicly offered services of other application systems. The service registry works together with the orchestration system. 
+
 
 <a name="as" />
 
 #### Authorisation System
 
-blabla über AS
+The authorisation system is responsible for managing the intra-cloud access rules. This means it describes which application system may use which services of another application system. It further manages the inter-cloud access rules, which define which other local clouds are allowed to consume which services from this cloud. This is relevant when using multi-cloud. 
+
 
 <a name="os" />
 
 #### Orchestration System
 
-blabla über OS
+The Orchestration System is responsible for the binding between the application systems at runtime. This means that the Orchestration System takes over the entire orchestration process between the previously registered systems. This is done by respecting rules telling the application system which other application system it should connect to. In order for these orchestration rules to work, some information is needed, such as the reachability information of the respective application system (e.g. IP address and port), details of the service instance (e.g. URL) and authorisation-related information (e.g. certificates). In this way, the connection between two application systems can be established so that the services can be used with each other. 
 
 
 <a name="pinpoint" />
