@@ -75,7 +75,7 @@ The PiLogger One is connected to the Raspberry Pi via Inter-Integrated Circuit I
 An important point, why the PiLogger was chosen, is the availability of its own time base. This enables precise time intervals between measurements without being influenced by the actual activities of the Raspberry Pi. The PiLogger can be operated by two software, one for an OS with a GUI and the so called WebMonitor for an OS without GUI. Since in the prototype with Rasbian Strecht Lite an OS without GUI was chosen, the Webmonitor interface is used for the power measurements. This can be accessed via the respective IP address of the Rapsberry Pis with port 8080. As shown in Figure \ref{webmonitor}, various values like voltage in Volt (V), current in Amperes (A), power in W, resistance in Ohm (Ω) and several others are displayed. 
 
 
-![Webmonitor PiLogger One](/images/pilogger2.png)
+![Webmonitor PiLogger One](/images/pilogger3.png)
 
 
 Furthermore, these values are logged and saved in a log file, where a differentiation is made between the latest measured value, minimum, maximum and average. In addition, diagrams with the logged values can be created. In summary, PiLogger WebMonitor can be used for logging and processing measurement data. By means of the setting functions in the WebMonitor the control over the whole PiLogger One extension can be obtained. 
@@ -113,7 +113,10 @@ The Orchestration System is responsible for the binding between the application 
 <a name="pinpoint" />
 
 ### Pinpoint APM 
- Pinpoint erklären 
+
+Pinpoint is an open source APM tool used to measure the performance of large distributed systems using an agent-based approach. Thereby, the overall structure of a system is analysed and it is shown how several components of a system interact with each other (e.g. the core systems in Arrowhead). Each component is equipped with an agent, which monitors the runtime and provides information on the code level about which transaction has been executed. It is highlighted that the use of Pinpoint increases resource consumption by only 3 %. Since it is as well written in Java, it is compatible with the Arrowhead framework. Furthermore, it can instrument the Arrowhead core systems to track transactions without changing a line of code. Like PiLogger One, Pinpoint offers different metrics to measure the performance of the tasks being performed. 
+
+**Vielleicht Bild von pinpoitn mit Core Systems**
  
  <a name="links" />
 
