@@ -25,8 +25,9 @@
 <a name="project" />
 
 ## Presentation Project
+ Github repository is used to document the developed prototype for the project **MIT 4.0 - Messung der IT-Sicherheit in Industrie 4.0**, which is led by Forschung Burgenland and funded under the EFRE programme "Investionen in Wachstum und Beschäftigung Österreich 2014-2020". 
 
-Was das Projekt überhaupt zeigen soll --> Gibts da ein Deliverable was ich heranziehen kann? Ich weiß zwar was der Prototyp zeigen soll, aber bezüglich MIT 4.0 bin ich mir nicht sicher ob ich es 100%  richtig beschreiben kann. 
+As the name of the project indicates, Industry 4.0 is a forward-looking field, with security being a particularly important factor. Industry 4.0 is about networking software and IT systems with production facilities in order to increase efficiency in production with the resulting cyber-physical systems (CPS). This networking results in new security risks which must be kept under control to guarantee the success of the company. To prevent security risks, compromises must be made, such as reducing computing power or increasing time by strengthening encryption mechanisms. In other words, it is a trade-off between the necessary reduction of the threat risk through security mechanisms, and the effort required to implement these mechanisms at the different levels.  Therefore, the aim of this project is the development of a tool-set to develop methods for the evaluation of performance and security for Industry 4.0 applications, which can be termed as a strong foundation-oriented focus. 
 
 <a name="scenarios" />
 
