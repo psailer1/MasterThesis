@@ -32,15 +32,15 @@ Was das Projekt überhaupt zeigen soll --> Gibts da ein Deliverable was ich hera
 
 ## Scenarios
 
-Scenario 1: Consumer to Producer --> Erklärung wie das Funktioniert
+This section describes two scenarios which have been implemented in the different [branches](#branches) of this Github repository. 
 
-Eher Sequence Diagram oder diese Bilder? 
+In both scenarios, a CPS is formed, which means that several components are interconnected to measure the physical world, perform calculations and change the physical world based on this, if necessary. Therefore, the simple scenario of a temperature control of a room is used. In the scenarios, the CPS consists of two components (C1, C2) that are involved in the closed-loop temperature control.  C1 acts as an actuator, which uses an air-conditioning system, and C2 as a sensor, which measures the temperature. The goal of this interaction is to control the temperature of a physical space by periodically measuring the current temperature and activating an air-conditioning system when the temperature reaches a predefined limit, in this case 25°C. 
+
+In scenario 1, the actuator (C1) needs the temperature to decide whether to cool the room or not. To do this, it sends a request to the sensor (C2), which measures the temperature and sends the temperature value back. This means that this run is carried out periodically without knowing beforehand whether cooling must take place or not. The interaction in this scenario is started by C1, as shown in the figure below. 
 
 ![Scenario 1: Actuator to Sensor Solution](/images/scenario1.PNG)
 
-Scenario 2: Producer to Consumer --> Erklärung Unterschied Scenario 1
-
-Eher Sequence Diagram oder oder diese Bilder? 
+Another approach would be to measure the temperature periodically and perform the temperature limit calculation on the sensor component (C2). On the one hand, this means that the temperature is only sent to the actuator (C1) when cooling is necessary, but on the other hand, it is important to realise that the sensor component must be able to perform this calculation. The interaction in this scenario is started by C2, as shown in the figure below. 
 
 ![Scenario 2: Sensor to Actuator Solution](/images/scenario2.PNG)
 
@@ -48,7 +48,7 @@ Eher Sequence Diagram oder oder diese Bilder?
 
 ## Technologies 
 
-Erklären welche Technologien wir verwendet haben 
+In this section the used Hardware and Software is described to get an overview about their functionality. 
 
 <a name="raspi" />
 
@@ -57,7 +57,7 @@ Erklären welche Technologien wir verwendet haben
 
 Used Version Image: TBD 
 
-Raspi mit welchen Image
+For the components of the CPS Raspberry Pi 3 Model B+ were used. With this model it is possible to use the PiLogger One for power consumption measurements. To minimise the influence of unnecessary services, in order not to influence the measurements too much, the Lite image of Raspbian was used. Alternatively, the desktop version could be used if a GUI is preferred. For both scenarios, however, the GUI loose Lite Image is sufficient, since the components only have to be started via it. 
 
 
 <a name="pilogger" />
@@ -131,6 +131,8 @@ Pinpoint is an open source APM tool used to measure the performance of large dis
 | Arrowhead Framework |  | X | 4.1.3 | [Download](https://github.com/arrowhead-f/core-java-spring) |
 | Java Version |  | X | tbd | [Download]() |
 | PinPoint APM  |  | X | tbd | [Download]() |
+
+It should be noted that we have built and tested the various use cases with these versions, so there may be problems when using older or newer versions. 
 
 
 <a name="branches" />
