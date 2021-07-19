@@ -139,6 +139,7 @@ It should be noted that we have built and tested the various use cases with thes
 <a name="branches" />
 
 ## Description branches 
+
 This section gives an overview of the different branches. For more detailed information of a branch click on the link to go to the selected specific branch. 
 
 <a name="master" />
@@ -146,7 +147,7 @@ This section gives an overview of the different branches. For more detailed info
 ### Master
 
 
-![Arrowhead Core Systems](/images/coresystems.PNG)
+![Arrowhead Core Systems](/images/coresystems.png)
 
 [Click here to go to Master Branch](https://github.com/igo3r/MIT4.0/tree/main)
 
@@ -154,7 +155,7 @@ This section gives an overview of the different branches. For more detailed info
 
 ### Use Case 1
 
-![Use Case 1](/images/timedriven.PNG)
+![Use Case 1](/images/usecase1.png)
 
 [Click here to go to UseCase1 Branch](https://github.com/igo3r/MIT4.0/tree/UseCase1)
 
@@ -163,7 +164,7 @@ This section gives an overview of the different branches. For more detailed info
 
 ### Use Case 2
 
-![Use Case 2](/images/eventdriven.PNG)
+![Use Case 2](/images/usecase2.png)
 
 [Click here to go to UseCase2 Branch](https://github.com/igo3r/MIT4.0/tree/UseCase2)
 
@@ -173,7 +174,7 @@ This section gives an overview of the different branches. For more detailed info
 
 ### Use Case 3
 
-![Use Case 3](/images/timedriven.PNG)
+![Use Case 3](/images/usecase3.png)
 
 [Click here to go to UseCase3 Branch](https://github.com/igo3r/MIT4.0/tree/UseCase3)
 
@@ -183,7 +184,7 @@ This section gives an overview of the different branches. For more detailed info
 
 ### Use Case 4
 
-![Use Case 4](/images/eventdriven.PNG)
+![Use Case 4](/images/usecase4.png)
 
 [Click here to go to UseCase4 Branch](https://github.com/igo3r/MIT4.0/tree/UseCase4)
 
@@ -191,6 +192,8 @@ This section gives an overview of the different branches. For more detailed info
 <a name="finalprototype" />
 
 ### Final Prototype
+
+![Final Prototype](/images/finalprototype.png)
 
 [Click here to go to final_prototype Branch](https://github.com/igo3r/MIT4.0/tree/final_prototype)
 
