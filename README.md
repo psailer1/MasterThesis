@@ -139,10 +139,14 @@ It should be noted that we have built and tested the various use cases with thes
 <a name="branches" />
 
 ## Description branches 
+This section gives an overview of the different branches. For more detailed information of a branch click on the link to go to the selected specific branch. 
 
 <a name="master" />
 
 ### Master
+
+
+![Arrowhead Core Systems](/images/coresystems.PNG)
 
 [Click here to go to Master Branch](https://github.com/igo3r/MIT4.0/tree/main)
 
@@ -150,6 +154,7 @@ It should be noted that we have built and tested the various use cases with thes
 
 ### Use Case 1
 
+![Use Case 1](/images/timedriven.PNG)
 
 [Click here to go to UseCase1 Branch](https://github.com/igo3r/MIT4.0/tree/UseCase1)
 
@@ -158,12 +163,17 @@ It should be noted that we have built and tested the various use cases with thes
 
 ### Use Case 2
 
+![Use Case 2](/images/eventdriven.PNG)
+
 [Click here to go to UseCase2 Branch](https://github.com/igo3r/MIT4.0/tree/UseCase2)
 
 
 <a name="usecase3" />
 
+
 ### Use Case 3
+
+![Use Case 3](/images/timedriven.PNG)
 
 [Click here to go to UseCase3 Branch](https://github.com/igo3r/MIT4.0/tree/UseCase3)
 
@@ -172,6 +182,8 @@ It should be noted that we have built and tested the various use cases with thes
 <a name="usecase4" />
 
 ### Use Case 4
+
+![Use Case 4](/images/eventdriven.PNG)
 
 [Click here to go to UseCase4 Branch](https://github.com/igo3r/MIT4.0/tree/UseCase4)
 
