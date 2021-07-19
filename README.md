@@ -116,23 +116,22 @@ The Orchestration System is responsible for the binding between the application 
 
 Pinpoint is an open source APM tool used to measure the performance of large distributed systems using an agent-based approach. Thereby, the overall structure of a system is analysed and it is shown how several components of a system interact with each other (e.g. the core systems in Arrowhead). Each component is equipped with an agent, which monitors the runtime and provides information on the code level about which transaction has been executed. It is highlighted that the use of Pinpoint increases resource consumption by only 3 %. Since it is as well written in Java, it is compatible with the Arrowhead framework. Furthermore, it can instrument the Arrowhead core systems to track transactions without changing a line of code. Like PiLogger One, Pinpoint offers different metrics to measure the performance of the tasks being performed. 
 
-**Vielleicht Bild von pinpoitn mit Core Systems**
+![Webmonitor PiLogger One](/images/pinpoint.PNG)
  
  <a name="links" />
 
-### Links
+### Summary
 
-Raspberry Pi OS Lite: [https://www.raspberrypi.org/software/operating-systems/#raspberry-pi-os-32-bit ](https://www.raspberrypi.org/software/operating-systems/#raspberry-pi-os-32-bit)
+| Technology | Hardware | Software | Version | Link |
+| ---------- | -------- | -------- | ------- | ---- |
+| Raspberry Pi | X  |  | Model 3 B + | [Purchase](https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/) |
+| Raspberry Pi OS Lite |  | X | tbd | [Download](https://www.raspberrypi.org/software/operating-systems/#raspberry-pi-os-32-bit) |
+| PiLogger One | X |  | 1.0 | [Purchase](https://www.pilogger.eu/) |
+| PiLogger One Webmonitor |  | X | 0v10 Beta | [Download Software](https://www.pilogger.de/index.php/de/download-de/category/2-software), [Download Installation Description](https://www.pilogger.de/index.php/de/download-de/category/3-documentation)|
+| Arrowhead Framework |  | X | 4.1.3 | [Download](https://github.com/arrowhead-f/core-java-spring) |
+| Java Version |  | X | tbd | [Download]() |
+| PinPoint APM  |  | X | tbd | [Download]() |
 
-Buy PiLogger One: [https://www.pilogger.eu/](https://www.pilogger.eu/)
-
-PiLogger One Webmonitor Software: [https://www.pilogger.de/index.php/de/download-de/category/2-software](https://www.pilogger.de/index.php/de/download-de/category/2-software)
-
-PiLogger One Installation Description: [https://www.pilogger.de/index.php/de/download-de/category/3-documentation](https://www.pilogger.de/index.php/de/download-de/category/3-documentation)
-
-Arrowhead Framework - ATTENTION, this is a newer version, not that one we used. The core systems, which we used, can be found in Master Branch: [https://github.com/arrowhead-f/core-java-spring](https://github.com/arrowhead-f/core-java-spring)
-
-Java Version: TBD 
 
 <a name="branches" />
 
