@@ -143,7 +143,19 @@ It should be noted that we have built and tested the various use cases with thes
 This section gives an overview of the different branches. For more detailed information of a branch click on the link to go to the selected specific branch. 
 All branches except final are executed locally on a device with the IP address 127.0.0.1. The branch final_prototype has a separate device for each component, hence different IP addresses for the components are entered in the figures. 
 
-As already mentioned, the communication protocol HTTP as well as HTTPS can be used. For the distinction, different ports would be chosen for each variant. Each port has four digits, with HTTP xx5x and HTTPS xx4x as the pattern. As an example, the service registry port in HTTP **2254** and HTTPS **2244** is taken. 
+As already mentioned, the communication protocol HTTP as well as HTTPS can be used. For the distinction, different ports would be chosen for each variant. Each port has four digits, with HTTP 225x and HTTPS 224x as the pattern. As an example, the service registry port in HTTP **2254** and HTTPS **2244** is taken. All used ports are listed in the table below. 
+
+| Component | HTTPS | HTTP | 
+| --------- | ---- | ----- |
+| Component 1 | 2241 | 2251 |
+| Component 2 | 2242 | 2252 |
+| Orchestration System | 2243 | 2253 |
+| Authorization System | 2244 | 2254 |
+| Service Registry System | 2245 | 2255 |
+| Database | 3306 | 3306 |
+| PiLogger One Webmonitor | 8080 | 8080 |
+| Pinpoint APM | tbd | tbd |
+
 
 <a name="master" />
 
@@ -158,6 +170,8 @@ The master branch includes the three Arrowhead core systems Service Registry Sys
 <a name="usecase1" />
 
 ### Use Case 1
+
+
 
 ![Use Case 1](/images/usecase1.png)
 
