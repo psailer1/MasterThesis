@@ -147,8 +147,8 @@ As already mentioned, the communication protocol HTTP as well as HTTPS can be us
 
 | Component | HTTPS | HTTP | 
 | --------- | ---- | ----- |
-| Component 1 | 2241 | 2251 |
-| Component 2 | 2242 | 2252 |
+| C1 | 2241 | 2251 |
+| C2 | 2242 | 2252 |
 | Orchestration System | 2243 | 2253 |
 | Authorization System | 2244 | 2254 |
 | Service Registry System | 2245 | 2255 |
@@ -156,12 +156,13 @@ As already mentioned, the communication protocol HTTP as well as HTTPS can be us
 | PiLogger One Webmonitor | 8080 | 8080 |
 | Pinpoint APM | tbd | tbd |
 
+Each branch description provides a figure, including C1, C2 and Arrowhead with the core systems. The figures show the procedure of the CPS and illustrate the individual ip-addresses and the associated ports for each component, like described in the table above. 
 
 <a name="master" />
 
 ### Master
 
-The master branch includes the three Arrowhead core systems Service Registry System, Authorization System and Orchestration System in Version 4.1.3. As the Arrowhead Framework includes more Systems like mentioned above this brunch provides a **Clean Code Version**. The Master branch is intended for local execution of the code via HTTPS. 
+The master branch includes the three Arrowhead core systems Service Registry System, Authorization System and Orchestration System in Version 4.1.3. As the Arrowhead Framework includes more Systems like mentioned above this brunch provides a **Clean Code Version**. The Master branch is intended for local execution of the code via HTTPS. This branch is the basis for the other brunches, which extend this branch with C1 and C2. 
 
 ![Arrowhead Core Systems](/images/coresystems.png)
 
@@ -171,6 +172,7 @@ The master branch includes the three Arrowhead core systems Service Registry Sys
 
 ### Use Case 1
 
+Use Case 1 is the implementation of [Scenario 1](#scenarios) using the communication protocol HTTPS. The Arrowhead Framework is used to ensure authorized communication between C1 and C2. The branch is intended for local execution of the code on one device.
 
 
 ![Use Case 1](/images/usecase1.png)
@@ -182,6 +184,8 @@ The master branch includes the three Arrowhead core systems Service Registry Sys
 
 ### Use Case 2
 
+Use Case 2 is the implementation of [Scenario 2](#scenarios) using the communication protocol HTTPS. The Arrowhead Framework is used to ensure authorized communication between C1 and C2. The branch is intended for local execution of the code on one device.
+
 ![Use Case 2](/images/usecase2.png)
 
 [Click here to go to UseCase2 Branch](https://github.com/igo3r/MIT4.0/tree/UseCase2)
@@ -191,6 +195,8 @@ The master branch includes the three Arrowhead core systems Service Registry Sys
 
 
 ### Use Case 3
+
+Use Case 3 is the implementation of [Scenario 1](#scenarios) using the communication protocol HTTP. The Arrowhead Framework is used to ensure authorized communication between C1 and C2. The branch is intended for local execution of the code on one device.
 
 ![Use Case 3](/images/usecase3.png)
 
@@ -202,6 +208,8 @@ The master branch includes the three Arrowhead core systems Service Registry Sys
 
 ### Use Case 4
 
+Use Case 4 is the implementation of [Scenario 2](#scenarios) using the communication protocol HTTP. The Arrowhead Framework is used to ensure authorized communication between C1 and C2. The branch is intended for local execution of the code on one device.
+
 ![Use Case 4](/images/usecase4.png)
 
 [Click here to go to UseCase4 Branch](https://github.com/igo3r/MIT4.0/tree/UseCase4)
@@ -210,6 +218,8 @@ The master branch includes the three Arrowhead core systems Service Registry Sys
 <a name="finalprototype" />
 
 ### Final Prototype
+
+This branch provides the implementation of the final prototype of this project, which uses [Scenario 2](#scenarios) and the communication protocol HTTPS. The Arrowhead Framework is used to ensure authorized communication between C1 and C2. The branch is intended for the execution of the code on six devices. As shown in the figure below each component of the CPS has its own ip address in the range from 10.20.30.1-10.20.30.6, whereby the last provides the database. 
 
 ![Final Prototype](/images/finalprototype.png)
 
@@ -221,7 +231,7 @@ The master branch includes the three Arrowhead core systems Service Registry Sys
 ### Summary 
 
 
-| Branch | Scenario | IP-Address | Protocol | Required Hardware |
+| Branch | Scenario | IP Address | Protocol | Required Hardware |
 | -------- | ---------- | ---------- | -------- | ----------------- |
 | Master | Only Arrowhead Coresystems | 127.0.0.1  | HTTPS | 1 Device |
 | Use Case 1 | Scenario 1 | 127.0.0.1  | HTTPS | 1 Device |
