@@ -14,7 +14,7 @@
     5. [Pinpoint APM](#pinpoint)
     6. [Summary with links](#links)
 5. [Description different branches](#branches)
-   1. [Master Branch](#master)
+   1. [Master Branch](#master1)
    2. [UseCase1 Branch](#usecase1)
    3. [UseCase2 Branch](#usecase2)
    4. [UseCase3 Branch](#usecase3)
@@ -158,15 +158,138 @@ As already mentioned, the communication protocol HTTP as well as HTTPS can be us
 
 Each branch description provides a figure, including C1, C2 and Arrowhead with the core systems. The figures show the procedure of the CPS and illustrate the individual ip-addresses and the associated ports for each component, like described in the table above. 
 
-<a name="master" />
+<a name="master1" />
 
 ### Master
 
-The master branch includes the three Arrowhead core systems Service Registry System, Authorization System and Orchestration System in Version 4.1.3. As the Arrowhead Framework includes more Systems like mentioned above this brunch provides a **Clean Code Version**. The Master branch is intended for local execution of the code via HTTPS. This branch is the basis for the other brunches, which extend this branch with C1 and C2. 
+The master branch includes the three Arrowhead core systems Service Registry System, Authorization System and Orchestration System in Version 4.1.3. As the Arrowhead Framework includes more Systems like mentioned above this brunch provides a **Clean Code Version**. The Master branch is intended for local execution of the code via HTTPS. This branch is the basis for the other brunches by extending it with C1 and C2. 
 
 ![Arrowhead Core Systems](/images/coresystems.png)
 
-[Click here to go to Master Branch](https://github.com/igo3r/MIT4.0/tree/main)
+The connection between the core systems is defined in the application.properties files. In this file the own ip address is defined, followed by the endpoints of the service registry and the reference to the required certificate. Furthermore the connection information to the database are stored in this file. 
+
+Service Registry System - application.properties file: 
+
+```
+############################################
+###       APPLICATION PARAMETERS         ###
+############################################
+
+spring.datasource.url=jdbc:mysql://127.0.0.1:3306/arrowhead?serverTimezone=Europe/Budapest
+spring.datasource.username=yourusername
+spring.datasource.password=yourpassword
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+spring.jpa.database-platform=org.hibernate.dialect.MySQL5InnoDBDialect
+# use true only for debugging
+spring.jpa.show-sql=false
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.hibernate.ddl-auto=none
+
+# Service Registry web-server parameters
+server.address=127.0.0.1
+server.port=2245
+core_system_name=SERVICE_REGISTRY
+
+############################################
+###           SECURE MODE                ###
+############################################
+
+server.ssl.enabled=true
+server.ssl.key-store-type=PKCS12
+server.ssl.key-store=classpath:certificates/service_registry.p12
+server.ssl.key-store-password=123456
+server.ssl.key-alias=service_registry
+server.ssl.key-password=123456
+server.ssl.client-auth=need
+server.ssl.trust-store-type=PKCS12
+server.ssl.trust-store=classpath:certificates/truststore.p12
+server.ssl.trust-store-password=123456
+```
+
+Authorisation System - application.properties file: 
+
+```
+############################################
+###       APPLICATION PARAMETERS         ###
+############################################
+
+spring.datasource.url=jdbc:mysql://127.0.0.1:3306/arrowhead?serverTimezone=Europe/Budapest
+spring.datasource.username=yourusername
+spring.datasource.password=yourpassword
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+spring.jpa.database-platform=org.hibernate.dialect.MySQL5InnoDBDialect
+spring.jpa.show-sql=false
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.hibernate.ddl-auto=none
+
+# Authorization web-server parameters
+server.address=127.0.0.1
+server.port=2244
+sr_port=2245
+sr_address=127.0.0.1
+core_system_name=AUTHORIZATION
+
+############################################
+###           SECURE MODE                ###
+############################################
+
+server.ssl.enabled=true
+server.ssl.key-store-type=PKCS12
+server.ssl.key-store=classpath:certificates/authorization.p12
+server.ssl.key-store-password=123456
+server.ssl.key-alias=authorization
+server.ssl.key-password=123456
+server.ssl.client-auth=need
+server.ssl.trust-store-type=PKCS12
+server.ssl.trust-store=classpath:certificates/truststore.p12
+server.ssl.trust-store-password=123456
+```
+
+Orchestration System - application.properties file: 
+
+```
+############################################
+###       APPLICATION PARAMETERS         ###
+############################################
+spring.datasource.url=jdbc:mysql://127.0.0.1:3306/arrowhead?serverTimezone=Europe/Budapest
+spring.datasource.username=yourusername
+spring.datasource.password=yourpassword
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+spring.jpa.database-platform=org.hibernate.dialect.MySQL5InnoDBDialect
+spring.jpa.show-sql=false
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.hibernate.ddl-auto=none
+
+# Orchestrator web-server parameters
+server.address=127.0.0.1
+server.port=2243
+core_system_name=ORCHESTRATOR
+sr_address=127.0.0.1
+sr_port=2245
+
+############################################
+###           SECURE MODE                ###
+############################################
+
+server.ssl.enabled=true
+server.ssl.key-store-type=PKCS12
+server.ssl.key-store=classpath:certificates/orchestrator.p12
+server.ssl.key-store-password=123456
+server.ssl.key-alias=orchestrator
+server.ssl.key-password=123456
+server.ssl.client-auth=need
+server.ssl.trust-store-type=PKCS12
+server.ssl.trust-store=classpath:certificates/truststore.p12
+server.ssl.trust-store-password=123456
+```
+
+If these files are compared with each other, it can be seen that the Service Registry only contains its own parameters, while Authorization System and Orchestration System contain those of the Service Registry in addition to their own. This is needed to allow Authorization System and Orchestration System to register as a system at the SR to provide their services. 
+
+Furhter it should be mentioned that `server.ssl.enabled=true` defines that HTTPS is used. If this parameter is set to `false` HTTP will be used, which means no certificates are required. 
+
 
 <a name="usecase1" />
 
@@ -177,7 +300,7 @@ Use Case 1 is the implementation of [Scenario 1](#scenarios) using the communica
 
 ![Use Case 1](/images/usecase1.png)
 
-[Click here to go to UseCase1 Branch](https://github.com/igo3r/MIT4.0/tree/UseCase1)
+[For detailed information click here to go to UseCase1 Branch](https://github.com/igo3r/MIT4.0/tree/UseCase1)
 
 
 <a name="usecase2" />
@@ -188,7 +311,7 @@ Use Case 2 is the implementation of [Scenario 2](#scenarios) using the communica
 
 ![Use Case 2](/images/usecase2.png)
 
-[Click here to go to UseCase2 Branch](https://github.com/igo3r/MIT4.0/tree/UseCase2)
+[For detailed information click here to go to UseCase2 Branch](https://github.com/igo3r/MIT4.0/tree/UseCase2)
 
 
 <a name="usecase3" />
@@ -200,7 +323,7 @@ Use Case 3 is the implementation of [Scenario 1](#scenarios) using the communica
 
 ![Use Case 3](/images/usecase3.png)
 
-[Click here to go to UseCase3 Branch](https://github.com/igo3r/MIT4.0/tree/UseCase3)
+[For detailed information click here to go to UseCase3 Branch](https://github.com/igo3r/MIT4.0/tree/UseCase3)
 
 
 
@@ -212,7 +335,7 @@ Use Case 4 is the implementation of [Scenario 2](#scenarios) using the communica
 
 ![Use Case 4](/images/usecase4.png)
 
-[Click here to go to UseCase4 Branch](https://github.com/igo3r/MIT4.0/tree/UseCase4)
+[For detailed information click here to go to UseCase4 Branch](https://github.com/igo3r/MIT4.0/tree/UseCase4)
 
 
 <a name="finalprototype" />
@@ -223,7 +346,7 @@ This branch provides the implementation of the final prototype of this project, 
 
 ![Final Prototype](/images/finalprototype.png)
 
-[Click here to go to final_prototype Branch](https://github.com/igo3r/MIT4.0/tree/final_prototype)
+[For detailed information click here to go to final_prototype Branch](https://github.com/igo3r/MIT4.0/tree/final_prototype)
 
 
 <a name="summarybranches" />
