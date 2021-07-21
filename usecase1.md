@@ -17,19 +17,21 @@ Use Case 1 is implemented with the procedure of Scenario 1 and is considered for
 
 The figure shows the procedure within the CPS between the components. 
 
-![Use Case 1](/images/usecase1.png)
+![Use Case 1](/images/usecase1_corrected.png)
 
 
 Procedure of Use Case 1: 
-* Step 1: C1 measures the temperature of the physical environment.
-* Step 2: The SC  sends a request to the OS asking it to send back a suitable AC.
-* Step 3: The OS forwards the request to the SR.
-* Step 4: The SR searches the database for suitable actuators and sends information about the AC back to the OS.
-* Step 5: The OS asks the AS if they are allowed to communicate with each other. 
-* Step 6: The AS searches the existing authorization rules and reports back whether an authorization exists or not (this thesis deals with the case of an existing authorization).
-* Step 7: The OS then sends the communication endpoint of the AC to the SC.
-* Step 8: The SC sends a request to the AC with the request to activate itself.
-* Step 9: The AC activates to cool down the physical environment. 
+* Step 1: C1 required the temperature to make a decision if cooling the room is necessary. Therefore a reqest to get the temperature from C2 is sent to Orchestration System.
+* Step 2: The Orchestration System forwards the request to the SR.
+* Step 3: The Service Requistry System searches the database for suitable actuators and sends information about C2 back to the Orchestration System.
+* Step 4: The Orchestration System asks the Authorization System if they are allowed to communicate with each other. 
+* Step 5: The Authorization System searches the existing authorization rules and reports back whether an authorization exists or not.
+* Step 6: The Orchestration System then sends the communication endpoint of C2 to C1.
+* Step 7: C1 sends a request to the C2 to request the current temperature.
+* Step 8: C2 measures the phyiscal environment. 
+* Step 9: C2 returns the measured temperature to C1. 
+* Step 10: C1 cools down the phyiscal environment, if the receives temperature is above a predefined limit. 
 
+The sequence diagram below shows a more detailed procedure, by showing which services are called by which component. Furthermore it includes the database, which stores the data, and C0, with which it is possible to start the run in CPS. Since C0 and the database have no influence on the scenario itself, they are not shown in the previous figure. 
 
-![SequenceDiagramm Use Case 1](/images/Usecase1and3sequence.png)
+![SequenceDiagramm Use Case 1](/images/sequencediagrammUC1andUC3.png)
