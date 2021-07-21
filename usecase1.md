@@ -61,3 +61,24 @@ The sequence diagram below shows a more detailed procedure, by showing which ser
 As mentioned in the previous section, C0 is used to start the runs. C0 is a workload balancer to ensure that all use cases can be compared with each other in a controlled way. The workload balancer is used to define runs, which specify how many measurements should be taken per run. As MIT 4.0 is used to explore security and performance, this allows both aspects to be analysed. 
 
 To measure Use Case 1, the workload must first be defined and executed. The workload controller connects to C1 and send a request to the orchestration system, as shown in step 1 of the first figure. The rest of the process can be found in the section [Architecture](#architecture). 
+
+### Maven Project
+
+The Arrowhead Framework is implemented in Java as a Maven Project, which uses the Spring Boot Framework and the Model-View-Control (MVC) Design Pattern. This means that the three core systems are implemented as a RESTful web application with web services that can be accessed in this Use Case 1 with HTTPS. For more detailed information to Arrowhead, please go to the official [Arrowhead Github Repository](https://github.com/arrowhead-f/core-java-spring). 
+
+As mentioned in the [Master Branch](https://github.com/igo3r/MIT4.0) in all Use Cases only the three core systems are used. To add the components C1, C2 and C0 the the Arrowhead Maven Project, for each component a Java Maven Module Project have been created. To use the components within the project the pom.xml file has to be updated like shown in the figure below: 
+
+![pom.xml File Use Case 1](/images/mavenuc1t.png)
+
+As shown in the figure three lines (32-34) are added to integrate the newly created Maven Module Projects to the Arrowhead root package (core).
+In the code base following names where selected: 
+* arrowhead-client = Workload-Balancer C0
+* arrowhead-consumer = Temperater Sensor C1
+* arrowhead-producer = Air Condition System C2
+
+### Class Diagram 
+
+In this section a Class Diagram is shown, which indicates how the Controller Classes of the components uses their services to implement Use Case 1:
+
+* C1 Controller uses 
+
