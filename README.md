@@ -298,7 +298,7 @@ Furhter it should be mentioned that `server.ssl.enabled=true` defines that HTTPS
 Use Case 1 is the implementation of [Scenario 1](#scenarios) using the communication protocol HTTPS. The Arrowhead Framework is used to ensure authorized communication between C1 and C2. The branch is intended for local execution of the code on one device.
 
 
-![Use Case 1](/images/usecase1.png)
+![Use Case 1](/images/usecase1_corrected.png)
 
 [For detailed information click here to go to UseCase1 Branch](https://github.com/igo3r/MIT4.0/tree/UseCase1)
 
@@ -321,7 +321,7 @@ Use Case 2 is the implementation of [Scenario 2](#scenarios) using the communica
 
 Use Case 3 is the implementation of [Scenario 1](#scenarios) using the communication protocol HTTP. The Arrowhead Framework is used to ensure authorized communication between C1 and C2. The branch is intended for local execution of the code on one device.
 
-![Use Case 3](/images/usecase3.png)
+![Use Case 3](/images/usecase3_corrected.png)
 
 [For detailed information click here to go to UseCase3 Branch](https://github.com/igo3r/MIT4.0/tree/UseCase3)
 
