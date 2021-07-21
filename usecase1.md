@@ -20,8 +20,8 @@ The figure shows the procedure within the CPS between the components.
 ![Use Case 1](/images/usecase1.png)
 
 
-
-* Step 1: The SC measures the temperature of the physical environment.
+Procedure of Use Case 1: 
+* Step 1: C1 measures the temperature of the physical environment.
 * Step 2: The SC  sends a request to the OS asking it to send back a suitable AC.
 * Step 3: The OS forwards the request to the SR.
 * Step 4: The SR searches the database for suitable actuators and sends information about the AC back to the OS.
@@ -30,3 +30,6 @@ The figure shows the procedure within the CPS between the components.
 * Step 7: The OS then sends the communication endpoint of the AC to the SC.
 * Step 8: The SC sends a request to the AC with the request to activate itself.
 * Step 9: The AC activates to cool down the physical environment. 
+
+
+![SequenceDiagramm Use Case 1](/images/Usecase1and3sequence.png)
