@@ -31,6 +31,8 @@ The table below gives an overview of the other branches with a link to each of t
 
 ## Architecture
 
+DA VIELLEICHT EIN BILD WO MAN DIE GLÜHBRINE UND SO AUCH SIEHT!!! LIMITS AUFSCHREIBEN WANN SICH WAS EINSCHALTET UND ABSCHALTET. 
+
 The figure shows the procedure within the CPS between the components. 
 
 ![Final Prototype](/images/usecase2.png)
@@ -52,7 +54,7 @@ Procedure of the Final Prototype:
 
 The sequence diagram below shows a more detailed procedure, by showing which services are called by which component. Furthermore it includes the database, which stores the data, and C0, with which it is possible to start the run in CPS. Since C0 and the database have no influence on the scenario itself, they are not shown in the previous figure. 
 
-![SequenceDiagramm Final Prototype](/images/sequencediagrammUC2andUC4.png)
+![SequenceDiagramm Final Prototype](/images/Usecase2and4sequence.png)
 
 <a name="implementation" />
 
@@ -70,7 +72,7 @@ The Arrowhead Framework is implemented in Java as a Maven Project, which uses th
 
 As mentioned in the [Master Branch](https://github.com/igo3r/MIT4.0) in all Use Cases only the three core systems are used. To add the components C1, C2 and C0 the the Arrowhead Maven Project, for each component a Java Maven Module Project have been created. To use the components within the project the pom.xml file has to be updated like shown in the figure below: 
 
-![pom.xml File Final Prototype](/images/mavenuc2.png)
+![pom.xml File Final Prototype](/images/mavenfinalprototype.png)
 
 As shown in the figure three lines (32-34) are added to integrate the newly created Maven Module Projects to the Arrowhead root package (core).
 In the code base following names where selected: 
