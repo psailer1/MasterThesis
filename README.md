@@ -132,6 +132,7 @@ Pinpoint is an open source APM tool used to measure the performance of large dis
 | Arrowhead Framework |  | X | 4.1.3 | [Download](https://github.com/arrowhead-f/core-java-spring) |
 | Java Version |  | X | tbd | [Download]() |
 | PinPoint APM  |  | X | tbd | [Download]() |
+| XAMPP Control Panel | | X | tbd | tbd |
 
 It should be noted that we have built and tested the various use cases with these versions, so there may be problems when using older or newer versions. 
 
