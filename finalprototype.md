@@ -90,4 +90,4 @@ In this section a Class Diagram is shown, which indicates how the Controller Cla
 * ServiceRegistryController uses *queryRegistry*: This service is used to search in the database for existing systems and services. This service is called during the *orchestrationProcess* to find the requested system and its service(s). 
 * AuthorizationController uses *checkAutroizationIntraCloudRequest*: This serives is used to look for authorization rules to determine if two components are allowed to communicate with each other. This services is called during the *orchestrationProcess* to check, whether the requesting compontent and the requested component (in this case C1 and C2) are allowed to interact with each other. 
 
-
+![Class Diagram Final Prototype](/images/ClassdiagrammUC2and4andfinal.png)
