@@ -8,6 +8,10 @@ In this file the Use Case 1 is described. Use Case 1 is implemented with the pro
 1. [Link to other branches](#branches)
 1. [Architecture](#architecture)
 2. [Implementation](#implementation)
+  * [Workload Balancer](#workload)
+  * [Maven Project](#maven)
+  * [Class Diagram](#class)
+  * [How to start](#start)
 
 <a name="branches" />
 
@@ -56,11 +60,15 @@ The sequence diagram below shows a more detailed procedure, by showing which ser
 
 ## Implementation
 
+<a name="workload" />
+
 ### Workload Balancer (C0)
 
 As mentioned in the previous section, C0 is used to start the runs. C0 is a workload balancer to ensure that all use cases can be compared with each other in a controlled way. The workload balancer is used to define runs, which specify how many measurements should be taken per run. As MIT 4.0 is used to explore security and performance, this allows both aspects to be analysed. 
 
 To measure Use Case 1, the workload must first be defined and executed. The workload controller connects to C1 and send a request to the orchestration system, as shown in step 1 of the first figure. The rest of the process can be found in the section [Architecture](#architecture). 
+
+<a name="maven" />
 
 ### Maven Project
 
@@ -76,6 +84,8 @@ In the code base following names where selected:
 * arrowhead-consumer = Air Condition System C1
 * arrowhead-producer = Temperater Sensor C2
 
+<a name="class" />
+
 ### Class Diagram 
 
 In this section a Class Diagram is shown, which indicates how the Controller Classes of the components uses their services to implement Use Case 1:
@@ -86,3 +96,70 @@ In this section a Class Diagram is shown, which indicates how the Controller Cla
 * ServiceRegistryController uses *queryRegistry*: This service is used to search in the database for existing systems and services. This service is called during the *orchestrationProcess* to find the requested system and its service(s). 
 * AuthorizationController uses *checkAutroizationIntraCloudRequest*: This serives is used to look for authorization rules to determine if two components are allowed to communicate with each other. This services is called during the *orchestrationProcess* to check, whether the requesting compontent and the requested component (in this case C1 and C2) are allowed to interact with each other. 
 
+![Class Diagram Use Case 1](/images/ClassdiagrammUC1and3.png)
+
+
+<a name="start" />
+
+### How to start 
+
+1. Clone branch from Githab 
+
+`` git clone --branch UseCase1 https://github.com/igo3r/MIT4.0.git ``
+
+2. Open Development Environment like Eclipse or IntelliJ and import as *existing Maven Project*
+
+![Import Maven Project](/images/import.PNG)
+
+3. To create a Webserver and get access to database, start XAMPP Control Panel (we used v3.2.4). If you work on a Linux machine Apache Webserver and MariaDB can be used. 
+
+![XAMPP Control Panel](/images/xampp.PNG)
+
+
+4. Enter URL [http://127.0.0.1/phpmyadmin/](http://127.0.0.1/phpmyadmin/) in Browser
+
+5. Create Empty Arrowhead Database
+   1. Click on SQL to enter Queries 
+   2. Go to script folder of the Github Project 
+   3. Copy content from file *create_empty_arrowhead_db.sql*
+   4. Paste the content into the SQL Query field and execute 
+   5. It should look similar to the picture below
+
+![Structure Arrowhead Database](/images/emptydatabase.PNG)
+
+6. Start Components of the project. Attention, please follow the noted sequence: 
+   1. ServiceRegistryMain.java
+   2. AuthorizationMain.java
+   3. OrchestratorMain.java
+   4. ConsumerMain.java
+   5. ProducerMain.java
+   6. ClientMain.java --> has no influence to the database
+
+![Successful start AuthorizationMain.java](/images/successfulstart.PNG)
+
+  7. It can be tested by checking the SwaggerSide of the components, like shown in the Picture below for Service Registry. To go to swagger use the ip-addresses and ports from the first picture at the top of the side and put them in the URL line of the browser. If this sides are available, the systems work. 
+
+![Swagger Service Registry](/images/swaggersr.png)
+
+
+7. Now it should similar to the pictures below. The Systems should be registered in Table *system_* (first picture) and the Services in Table *service_registry* (second picture). At this stage C1 and C2 are not able to communicate with each other. 
+
+![Table system_](/images/system.PNG)
+
+![Table service_registry](/images/serviceregistry.PNG)
+
+7. After all are started successfully go back to script folder. 
+   1. Copy content from file *database_dependencies.sql*
+   2. Paste the content into the SQL Query field and execute
+
+8. Now it should work. To test it enter 127.0.0.1:2258 (C0) in the URL line of the browser to get to the Swagger of the **Arrowhead Client Core System**. 
+
+![Arrowhead Client Core System](/images/client.png)
+
+9. Make the runs using Arrowhead Client Core System API. To do this, click on the *All* tab and go to the second method called **run**. This will start the workload balancer. Important to note is the following: 
+   1. innerLoops: this number specifies how many measurements should be taken. It must be an even number, as half of the numbers are below and half are above the defined limit. A maximum of 1000 measurements can be performed. 
+   2. innerTimeout: this number specifies how many milliseconds there should be a pause between the measurements. If you want to pause for one second, enter 1000. 
+   3. outerLoop: this number indicates how many test runs are to be made. For each test run, the specified number of InnerLoops will be measured. If you enter 10 here and 20 for InnerLoop, then 10 times 20 measurements are carried out. 
+   4. outerTimeout: this number specifies how many milliseconds there should be between outer loops. If you want to pause for one second, enter 1000. 
+
+DA KOMMT NOCH EIN BILD HER 
