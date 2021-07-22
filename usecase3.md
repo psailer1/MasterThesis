@@ -9,6 +9,10 @@ In this file the Use Case 3 is described. Use Case 3 is implemented with the pro
 1. [Link to other branches](#branches)
 1. [Architecture](#architecture)
 2. [Implementation](#implementation)
+  * [Workload Balancer](#workload)
+  * [Maven Project](#maven)
+  * [Class Diagram](#class)
+  * [How to start](#start)
 
 <a name="branches" />
 
@@ -57,11 +61,16 @@ The sequence diagram below shows a more detailed procedure, by showing which ser
 
 ## Implementation
 
+<a name="workload" />
+
 ### Workload Balancer (C0)
 
 As mentioned in the previous section, C0 is used to start the runs. C0 is a workload balancer to ensure that all use cases can be compared with each other in a controlled way. The workload balancer is used to define runs, which specify how many measurements should be taken per run. As MIT 4.0 is used to explore security and performance, this allows both aspects to be analysed. 
 
 To measure Use Case 3, the workload must first be defined and executed. The workload controller connects to C1 and send a request to the orchestration system, as shown in step 1 of the first figure. The rest of the process can be found in the section [Architecture](#architecture). 
+
+
+<a name="maven" />
 
 ### Maven Project
 
@@ -77,6 +86,9 @@ In the code base following names where selected:
 * arrowhead-consumer = Air Condition System C1
 * arrowhead-producer = Temperater Sensor C2
 
+
+<a name="class" />
+
 ### Class Diagram 
 
 In this section a Class Diagram is shown, which indicates how the Controller Classes of the components uses their services to implement Use Case 3:
@@ -86,4 +98,11 @@ In this section a Class Diagram is shown, which indicates how the Controller Cla
 * OrchestratorController uses *orchestrationProcess*: This action is called each time a component of a CPS is looking for another component or service. Therefore the request is forwarded to the Service Registry for looking up all registered systems and their services. Only if the requested service is registered, the next step is to check the authorization rules by consuming *checkAuthorizationIntraCloudRequest* service. If communication is allowed the Orechstration System return the endpoint data, so the requesting component can consume the requested service. 
 * ServiceRegistryController uses *queryRegistry*: This service is used to search in the database for existing systems and services. This service is called during the *orchestrationProcess* to find the requested system and its service(s). 
 * AuthorizationController uses *checkAutroizationIntraCloudRequest*: This serives is used to look for authorization rules to determine if two components are allowed to communicate with each other. This services is called during the *orchestrationProcess* to check, whether the requesting compontent and the requested component (in this case C1 and C2) are allowed to interact with each other. 
+
+![Class Diagram Use Case 3](/images/ClassdiagrammUC1and3.png)
+
+
+<a name="start" />
+
+### How to start 
 
