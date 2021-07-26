@@ -6,12 +6,13 @@ In this file the Use Case 1 is described. Use Case 1 is implemented with the pro
 
 
 1. [Link to other branches](#branches)
-1. [Architecture](#architecture)
-2. [Implementation](#implementation)
-  * [Workload Balancer](#workload)
-  * [Maven Project](#maven)
-  * [Class Diagram](#class)
-  * [How to start](#start)
+2. [Architecture](#architecture)
+3. [Implementation](#implementation)
+   * [Workload Balancer](#workload)
+   * [Maven Project](#maven)
+   * [Class Diagram](#class)
+   * [How to start](#start)
+4. [How to add C1 and C2](#addcomponents)
 
 <a name="branches" />
 
@@ -50,7 +51,7 @@ Procedure of Use Case 1:
 * Step 7: C1 sends a request to the C2 to request the current temperature.
 * Step 8: C2 measures the phyiscal environment. 
 * Step 9: C2 returns the measured temperature to C1. 
-* Step 10: C1 cools down the phyiscal environment, if the receives temperature is above a predefined limit. 
+* Step 10: C1 cools down the phyiscal environment, if the received temperature is above a predefined limit. 
 
 The sequence diagram below shows a more detailed procedure, by showing which services are called by which component. Furthermore it includes the database, which stores the data, and C0, with which it is possible to start the run in CPS. Since C0 and the database have no influence on the scenario itself, they are not shown in the previous figure. 
 
@@ -127,7 +128,7 @@ In this section a Class Diagram is shown, which indicates how the Controller Cla
 
 ![Structure Arrowhead Database](/images/emptydatabase.PNG)
 
-6. Start Components of the project. Attention, please follow the noted sequence: 
+6. Start Components of the project. Attention, please follow the noted sequence, else the script for database dependencies will not work, as there are other ids for the systems and services: 
    1. ServiceRegistryMain.java
    2. AuthorizationMain.java
    3. OrchestratorMain.java
@@ -135,22 +136,55 @@ In this section a Class Diagram is shown, which indicates how the Controller Cla
    5. ProducerMain.java
    6. ClientMain.java --> has no influence to the database
 
-![Successful start AuthorizationMain.java](/images/successfulstart.PNG)
+![Successful start AuthorizationMain.java](/images/successfulstartHTTPS.PNG)
 
   7. It can be tested by checking the SwaggerSide of the components, like shown in the Picture below for Service Registry. To go to swagger use the ip-addresses and ports from the first picture at the top of the side and put them in the URL line of the browser. If this sides are available, the systems work. 
 
-![Swagger Service Registry](/images/swaggersr.png)
+Attention: in this Branch HTTPS is used. Therefore you have to add https:// in front of the IP-Address, like https://127.0.0.1:2245, else you will get following errormessage: 
+
+![Error message if https:// is missing](/images/errormessageHTTPS.PNG)
+
+  By entering the correct URL you will get an "Certificate" Error, because for using HTTPS certificates are required. For each system the certificates are located in the src/main/ressource/certificate folder. The picture below shows the location of the Service Registry Certificate. 
+   
+   ![Service Registry Certificate Location](/images/locationcertificatesr.png)
+   
+   This certificate has to be imported in the browser you use to check Swagger. For Firefox Browser you have to go to Settings --> Privacy & Security --> Scroll down to section Security --> Click on View Certificates and it should look like the picture below. 
+   
+   ![Import Certificate](/images/importcertificate.PNG)
+   
+   Then click on Import and browse to the location where the cloned Github project is located. Then go to the cerficate folder in src/main/ressources and import the certificate. Afterwards you can enter the URL again and the browser will ask which certificate to use, like shown on the picture below. 
+   
+   ![Select Certificate](/images/importcertificate2.PNG)
+   
+   Click ok and now the Swagger Webpage should appear. 
+   
+   ![Swagger Service Registry](/images/serviceregistryswaggerhttps.PNG)
 
 
 7. Now it should similar to the pictures below. The Systems should be registered in Table *system_* (first picture) and the Services in Table *service_registry* (second picture). At this stage C1 and C2 are not able to communicate with each other. 
 
-![Table system_](/images/system.PNG)
+![Table system_](/images/tablesystem_UC1.PNG)
 
-![Table service_registry](/images/serviceregistry.PNG)
+![Table service_registry](/images/tableserviceregistry_UC1.PNG)
 
-7. After all are started successfully go back to script folder. 
+
+![Table service_definition](/images/tableservicedefinition_UC1.PNG)
+
+8. After all systems are started successfully go back to script folder. 
    1. Copy content from file *database_dependencies.sql*
    2. Paste the content into the SQL Query field and execute
+   3. Following table will be updated, like shown in the figures below: 
+      *  authorization_intra_cloud
+      *  authorization_intra_cloud_interface_connection
+      *  orechstrator_store
+
+![Table authorization_intra_cloud](/images/tableauthorizationintracloud_UC1.PNG)
+
+![Table authorization_intra_cloud_interface_connection](/images/tableauthorizationintracloudinterfaceconnection_UC1.PNG)
+
+
+![Table orechstrator_store](/images/tableorchestratorstore_UC1.PNG)
+
 
 8. Now it should work. To test it enter 127.0.0.1:2258 (C0) in the URL line of the browser to get to the Swagger of the **Arrowhead Client Core System**. 
 
@@ -162,4 +196,15 @@ In this section a Class Diagram is shown, which indicates how the Controller Cla
    3. outerLoop: this number indicates how many test runs are to be made. For each test run, the specified number of InnerLoops will be measured. If you enter 10 here and 20 for InnerLoop, then 10 times 20 measurements are carried out. 
    4. outerTimeout: this number specifies how many milliseconds there should be between outer loops. If you want to pause for one second, enter 1000. 
 
-DA KOMMT NOCH EIN BILD HER 
+The URL for this is build as followed: /client/run/{outerLoop}/{outerTimeout}/{innerLoop}/{innerTimeout}
+
+Following the results of a test run is shown by taking /client/run/2/1/6/1. First the input is shown and afterwards the result. 
+
+![Swagger Client Test run](/images/testrunclient_UC1.PNG)
+
+![Result of Test run](/images/outputtestruns.png)
+
+
+<a name="addcomponents" />
+
+## How to add C1 and C2
