@@ -21,6 +21,7 @@
    5. [UseCase4 Branch](#usecase4)
    6. [final_prototype Branch](#finalprototype)
    7. [Summary Branches](#summarybranches)
+6. [How to start](#start)
 
 <a name="project" />
 
@@ -363,3 +364,62 @@ This branch provides the implementation of the final prototype of this project, 
 | Use Case 3 | Scenario 1 | 127.0.0.1  | HTTP | 1 Device |
 | Use Case 4 | Scenario 2 | 127.0.0.1  | HTTP | 1 Device |
 | Final Prototype | Scenario 2 | 10.20.30.1 - 10.20.30.6 | HTTPS | 6 Devices |
+
+<a name="start" />
+
+### How to start
+
+1. Clone branch from Githab 
+
+`` git clone https://github.com/igo3r/MIT4.0.git ``
+
+2. Open Development Environment like Eclipse or IntelliJ and import as *existing Maven Project*
+
+![Import Maven Project](/images/import.PNG)
+
+3. To create a Webserver and get access to database, start XAMPP Control Panel (we used v3.2.4). If you work on a Linux machine Apache Webserver and MariaDB can be used. 
+
+![XAMPP Control Panel](/images/xampp.PNG)
+
+
+4. Enter URL [https://127.0.0.1/phpmyadmin/](https://127.0.0.1/phpmyadmin/) in Browser
+
+5. Create Empty Arrowhead Database
+   1. Click on SQL to enter Queries 
+   2. Go to script folder of the Github Project 
+   3. Copy content from file *create_empty_arrowhead_db.sql*
+   4. Paste the content into the SQL Query field and execute 
+   5. It should look similar to the picture below
+
+![Structure Arrowhead Database](/images/emptydatabase.PNG)
+
+6. Start Components of the project. Attention, please follow the noted sequence: 
+   1. ServiceRegistryMain.java <br>
+      Location: arrowhead-serviceregistry/src/main/java/eu/arrowhead/core/serviceregistry/ServiceRegistryMain.java
+   3. AuthorizationMain.java <br>
+      Location: arrowhead-authorization/src/main/java/eu/arrowhead/core/authorization/AuthorizationMain.java
+   5. OrchestratorMain.java <br>
+      Location: arrowhead-orchestrator/src/main/java/eu/arrowhead/core/orchestrator/OrchestratorMain.java
+
+![Successful start AuthorizationMain.java](/images/successfulstartHTTPS.PNG)
+
+  7. It can be tested by checking the SwaggerSide of the components, like shown in the picture below for Service Registry. To go to swagger use the ip-addresses and ports in the table below put them in the URL line of the browser. If this sides are available, the systems work. 
+
+| System | IP-Address | Port |
+| ------ | ---------- | ---- |
+| Service Registry System | 127.0.0.1 | 2245 |
+| Authorization System | 127.0.0.1 | 2244 |
+| Orchestration System | 127.0.0.1 | 2243 |
+
+![Swagger Service Registry](/images/serviceregistryswaggerhttps.PNG)
+
+
+7. Now it should similar to the pictures below. The Systems should be registered in Table *system_* (first picture) and the Services in Table *service_registry* (second picture).
+
+![Table system_](/images/tablesystemHTTPSmaster.PNG)
+
+![Table service_registry](/images/tableserviceregistryHTTPSmaster.PNG)
+
+The other tables remain empty in this branch, because they are required to set orchestration and authorization information for communication of components. 
+
+8. Now it should work, but as there is no component implemented in this Branch, nothing will happen. This code will be extended in Branch Use Case 1 - 4 and Final Prototype with Components. 
