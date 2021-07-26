@@ -413,7 +413,7 @@ This branch provides the implementation of the final prototype of this project, 
 
 Attention: in this Branch HTTPS is used. Therefore you have to add https:// in front of the IP-Address, like https://127.0.0.1:2245, else you will get following errormessage: 
 
-![Error message if https:// is missing](/images/errormessagehttps.PNG)
+![Error message if https:// is missing](/images/errormessageHTTPS.PNG)
 
   By entering the correct URL you will get an "Certificate" Error, because for using HTTPS certificates are required. For each system the certificates are located in the src/main/ressource/certificate folder. The picture below shows the location of the Service Registry Certificate. 
    
