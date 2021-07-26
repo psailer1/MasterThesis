@@ -382,7 +382,7 @@ This branch provides the implementation of the final prototype of this project, 
 ![XAMPP Control Panel](/images/xampp.PNG)
 
 
-4. Enter URL [https://127.0.0.1/phpmyadmin/](https://127.0.0.1/phpmyadmin/) in Browser
+4. Enter URL [http://127.0.0.1/phpmyadmin/](http://127.0.0.1/phpmyadmin/) in Browser
 
 5. Create Empty Arrowhead Database
    1. Click on SQL to enter Queries 
@@ -411,15 +411,32 @@ This branch provides the implementation of the final prototype of this project, 
 | Authorization System | 127.0.0.1 | 2244 |
 | Orchestration System | 127.0.0.1 | 2243 |
 
-![Swagger Service Registry](/images/serviceregistryswaggerhttps.PNG)
+Attention: in this Branch HTTPS is used. Therefore you have to add https:// in front of the IP-Address, like https://127.0.0.1:2245, else you will get following errormessage: 
 
+![Error message if https:// is missing](/images/errormessagehttps.PNG)
 
-7. Now it should similar to the pictures below. The Systems should be registered in Table *system_* (first picture) and the Services in Table *service_registry* (second picture).
+  By entering the correct URL you will get an "Certificate" Error, because for using HTTPS certificates are required. For each system the certificates are located in the src/main/ressource/certificate folder. The picture below shows the location of the Service Registry Certificate. 
+   
+   ![Service Registry Certificate Location](/images/locationcertificatesr.png)
+   
+   This certificate has to be imported in the browser you use to check Swagger. For Firefox Browser you have to go to Settings --> Privacy & Security --> Scroll down to section Security --> Click on View Certificates and it should look like the picture below. 
+   
+   ![Import Certificate](/images/importcertificate.PNG)
+   
+   Then click on Import and browse to the location where the cloned Github project is located. Then go to the cerficate folder in src/main/ressources and import the certificate. Afterwards you can enter the URL again and the browser will ask which certificate to use, like shown on the picture below. 
+   
+   ![Select Certificate](/images/importcertificate2.PNG)
+   
+   Click ok and now the Swagger Webpage should appear. 
+   
+   ![Swagger Service Registry](/images/serviceregistryswaggerhttps.PNG)
+
+   8. Now it should similar to the pictures below. The Systems should be registered in Table *system_* (first picture) and the Services in Table *service_registry* (second picture).
 
 ![Table system_](/images/tablesystemHTTPSmaster.PNG)
 
 ![Table service_registry](/images/tableserviceregistryHTTPSmaster.PNG)
 
-The other tables remain empty in this branch, because they are required to set orchestration and authorization information for communication of components. 
+   The other tables remain empty in this branch, because they are required to set orchestration and authorization information for communication of components. 
 
-8. Now it should work, but as there is no component implemented in this Branch, nothing will happen. This code will be extended in Branch Use Case 1 - 4 and Final Prototype with Components. 
+9. Now it should work, but as there is no component implemented in this Branch, nothing will happen. This code will be extended in Branch Use Case 1 - 4 and Final Prototype with Components. 
