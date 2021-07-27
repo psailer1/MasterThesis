@@ -208,3 +208,38 @@ Following the results of a test run is shown by taking /client/run/2/1/6/1. Firs
 <a name="addcomponents" />
 
 ## How to add C1 and C2
+
+1. Create a new Maven Module Project for each of the component. This section will describe how to add C1, but it is the same way for C2. As mentioned above, the name of C1 in the project structure is *arrowhead-consumer*, while C2 is *arrowhead-producer*. 
+To add such a project click on File --> New --> Project --> Select Maven Module like shown in the picture below. 
+
+
+![Add new Maven Module Project](/images/mavenmuodule.PNG)
+
+In the next step the name of the module and the parent project must be selected. The name is *arrowhead-consumer*. 
+
+![Name the Maven Module Project](/images/module-name.PNG)
+
+The parent project is the downloaded **core** project of Arrowhead from the Github. In the picture below *arrowhead-consumer* and *arrowhead-producer* are already integrated, but the marked core project need to be selected as parent. 
+
+
+![Select Parent Project](/images/parent1.PNG)
+
+After everything was set up correctly in this window it should look like this: 
+
+
+![Overview New Maven Model](/images/parent2.PNG)
+
+If the window looks like this, click next to select the Archetype. As Arrowhead use Spring Boot, the Archetype with Artefact ID *spring-boot-blank-archetype* should be selected. 
+
+![Select Archetype](/images/archetype.PNG)
+
+After selecting the correct Archetype click next, to come to the next window. In this window nothing has to be changed and it should look like this: 
+![Finishing creation of New Maven Module](/images/groupid.PNG)
+
+Click finish to integrate the Maven Module to the project. 
+
+
+
+
+
+
