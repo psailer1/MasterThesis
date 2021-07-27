@@ -525,9 +525,160 @@ public class AuthSwaggerConfig extends DefaultSwaggerConfig {
 To be able to connect in further steps with C2 the class **[ConsumerConnection.java](https://github.com/igo3r/MIT4.0/blob/UseCase1/arrowhead-consumer/src/main/java/eu/arrowhead/mit/utils/ConsumerConnection.java)** in package *eu.arrowhead.mit.utils* is necessary. This class is responsible for the connection to the orchestrator (Line 46 - 58) and the producer (Line 69 - 101). Further the service which should be used, is called in this class (Line 103 - 125)
 
 
+NOTE: The ConsumerApplicationInitListener.java, the AuthSwaggerConfig.java and the ConsumerConnection.java were taken over and adapted from the Arrowhead Source Code. 
 
 
 ### Add Functionality to C2
+
+To be able to fulfil a task C2 requires a functionality, as C2 should simulate a temperature sensor to measure the physical environment. Therefore following classes are required: 
+
+![Overview classes producer](/images/producerclasses.PNG)
+
+In the package *eu.arrowhead.mit.producer* the [ApplicationListener](https://github.com/igo3r/MIT4.0/blob/UseCase1/arrowhead-producer/src/main/java/eu/arrowhead/mit/producer/ProducerApplicationInitListener.java), [Controller](https://github.com/igo3r/MIT4.0/blob/UseCase1/arrowhead-producer/src/main/java/eu/arrowhead/mit/producer/ProducerController.java) and [Main](https://github.com/igo3r/MIT4.0/blob/UseCase1/arrowhead-producer/src/main/java/eu/arrowhead/mit/producer/ProducerMain.java) are located. 
+
+**ProducerMain.java** - required to start this Maven Module:
+
+```
+@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
+@ComponentScan(CommonConstants.BASE_PACKAGE)
+@EntityScan(CoreCommonConstants.DATABASE_ENTITY_PACKAGE)
+@EnableJpaRepositories(basePackages = CoreCommonConstants.DATABASE_REPOSITORY_PACKAGE, repositoryBaseClass = RefreshableRepositoryImpl.class)
+@EnableSwagger2
+public class ProducerMain {
+
+	//=================================================================================================
+	// methods
+	
+	//-------------------------------------------------------------------------------------------------
+	public static void main(final String[] args) {
+		SpringApplication.run(ProducerMain.class, args);
+	}
+
+}
+```
+
+**ProducerApplicationInitListener.java** - spring boot application startup listener or init Method called when spring application will start. It will be called only once in spring boot application cycle: 
+```
+@Component
+public class ProducerApplicationInitListener extends ApplicationInitListener{
+
+	@Autowired
+	private CommonDBService commonDBService; 
+	
+	@Override
+	protected void customInit(final ContextRefreshedEvent event) {
+		logger.debug("customInit started...");
+		if (!isOwnCloudRegistered()) {
+			registerOwnCloud(event.getApplicationContext());
+		}
+	}
+	
+	private boolean isOwnCloudRegistered() {
+		logger.debug("isOwnCloudRegistered started...");
+		try {
+			commonDBService.getOwnCloud(sslProperties.isSslEnabled());
+			return true;
+		} catch (final DataNotFoundException ex) {
+			return false;
+		}
+	}
+	
+	private void registerOwnCloud(final ApplicationContext appContext) {
+		logger.debug("registerOwnCloud started...");
+			
+		if (!standaloneMode) {
+			String name = CoreDefaults.DEFAULT_OWN_CLOUD_NAME;
+			String operator = CoreDefaults.DEFAULT_OWN_CLOUD_OPERATOR;
+				
+			if (sslProperties.isSslEnabled()) {
+				@SuppressWarnings("unchecked")
+				final Map<String,Object> context = appContext.getBean(CommonConstants.ARROWHEAD_CONTEXT, Map.class);
+				final String serverCN = (String) context.get(CommonConstants.SERVER_COMMON_NAME);
+				final String[] serverFields = serverCN.split("\\.");
+				name = serverFields[1];
+				operator = serverFields[2];
+			}
+				
+			commonDBService.insertOwnCloud(operator, name, sslProperties.isSslEnabled(), null);
+			logger.info("{}.{} own cloud is registered in {} mode.", name, operator, getModeString());
+		}
+	}
+}
+```
+
+**ProducerController.java** - this class contains the logic of C1: 
+```
+@Api(tags = { CoreCommonConstants.SWAGGER_TAG_ALL })
+@CrossOrigin(maxAge = Defaults.CORS_MAX_AGE, allowCredentials = Defaults.CORS_ALLOW_CREDENTIALS, 
+			 allowedHeaders = { HttpHeaders.ORIGIN, HttpHeaders.CONTENT_TYPE, HttpHeaders.ACCEPT, HttpHeaders.AUTHORIZATION }
+)
+@RestController
+@RequestMapping(MITConstants.MIT_PRODUCER_URI)
+public class ProducerController {
+	@Autowired
+	private ProducerSensorControl psc;
+	
+	@GetMapping(path = CommonConstants.ECHO_URI)
+	public String echoService() {
+		return "Got it!";
+	}
+	
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Please enter an even number between 0 and 1000 for runs, and currentRun a number below runs."),
+	})
+	@RequestMapping(value = MITConstants.MIT_PRODUCER_GET_ARRAY_URI, method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+	ResponseEntity<String> getRoomTemperatureArray(@PathVariable int runs, @PathVariable int currentRun) {
+		return new ResponseEntity<String>(psc.getSensorDataArray(runs, currentRun), HttpStatus.OK);
+	}
+}
+```
+
+
+To use Swagger the class **AuthSwaggerConfig.java** in the package *eu.arrowhead.mit.swagger* is required. Therefore the *MITConstants.MIT_SYSTEM_PRODUCER* must be used. 
+
+```
+@EnableSwagger2
+@Configuration
+public class AuthSwaggerConfig extends DefaultSwaggerConfig {
+	public AuthSwaggerConfig() {
+		super(MITConstants.MIT_SYSTEM_PRODUCER);
+	}
+
+	@Bean
+	public Docket customizeSwagger() {
+		return configureSwaggerForCoreSystem(this.getClass().getPackageName());
+	}
+}
+
+```
+
+The package *eu.arrowhead.mit.utils* contains the class **ProducerSensorControl.java**. This class simulates the measurement of the physical environment. It is defined, that half of the testruns, which will be conducted, have a value below the limit of 25 degrees, while the other half is above. This ensures, that the testruns are compareable. Therefore, two arrays (VALUES_TEMPERATURE_HIGH and VALUES_TEMPERATURE_LOW) are added to *arrowhead-core-common/src/main/java/eu/arrowhead/common/mit/MITConstants.java* (Line 74 and 76) with 500 values each. This means a maximum of 1000 inner loops can be performed. 
+
+```
+@Component
+public class ProducerSensorControl {
+
+	public String getSensorDataArray(int runs, int currentRun) {
+		int runBound = (runs/2); 
+		double temperature = 0.0;
+		if (runs % 2 != 0){
+			return "Please enter an even number between 1 and 1000!";
+		} else if (currentRun > (runBound * 2)) {
+			return "Please enter for currentRun a number which is below or equal " + runBound*2; 
+		} else {
+			if (currentRun < runBound || currentRun == runBound) {
+				temperature = MITConstants.VALUES_TEMPERATURE_LOW[currentRun -1];
+			} else {
+				temperature = MITConstants.VALUES_TEMPERATURE_HIGH[currentRun - runBound -1];
+			}
+			return  Double.toString(temperature);		
+		}
+	}
+}
+
+```
+
+NOTE: The ProducerApplicationInitListener.java and the AuthSwaggerConfig.java  were taken over and adapted from the Arrowhead Source Code. 
 
 
 
