@@ -313,6 +313,8 @@ server.ssl.trust-store-type=PKCS12
 server.ssl.trust-store=classpath:certificates/truststore.p12
 server.ssl.trust-store-password=123456
 ```
+In the C0 file it is important to give information about the endpoint of the system, which starts the request. In this case C1 is requesting the temperature from C2. Therefore, C0 needs to know, to start with C1. 
+
 
 application.properties File C1: 
 
@@ -329,13 +331,13 @@ spring.jpa.hibernate.ddl-auto=none
 server.address=127.0.0.1
 server.port=2241
 core_system_name=CONSUMER
-#c2_address=127.0.0.1
-#c2_port=2242
-#c2_path=/get_array
+c2_address=127.0.0.1
+c2_port=2242
+c2_path=/get_array
 sr_address=127.0.0.1
 sr_port=2245
-#os_address=127.0.0.1
-#os_port=2243
+os_address=127.0.0.1
+os_port=2243
 
 ############################################
 ###           SECURE MODE                ###
@@ -351,6 +353,8 @@ server.ssl.trust-store-type=PKCS12
 server.ssl.trust-store=classpath:certificates/truststore.p12
 server.ssl.trust-store-password=123456
 ```
+
+C1 requests the temperature from C2, because of this, the endpoint of C2 (ip address, port and service-url) has to be defined in the application.proeprties file of C1. Further C1 has to know the endpoint of Service Registry System and of Orechstrator System.  
 
 application.properties File C2: 
 
@@ -384,6 +388,8 @@ server.ssl.trust-store-type=PKCS12
 server.ssl.trust-store=classpath:certificates/truststore.p12
 server.ssl.trust-store-password=123456
 ```
+
+C2 do not need an end, it just has to no where to find the Service Registry to register. 
 
 <a name="constants" />
 
