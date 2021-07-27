@@ -13,6 +13,15 @@ In this file the Use Case 1 is described. Use Case 1 is implemented with the pro
    * [Class Diagram](#class)
    * [How to start](#start)
 4. [How to add C1 and C2](#addcomponents)
+   * [Create Maven Module](#mavenmodule)
+   * [Create folder Structure for Components](#folderstructure)
+   * [Create application.properties Files](#application)
+   * [Add Constants for Components in Arrowhead Source Code](#constants)
+   * [Add Functionality to C1](#functionalityc1)   
+   * [Add Functionality to C2](#functionalityc2)   
+   * [Add Functionality to C0](#functionalityc0)
+   * [Add Systems and Services to Arrowhead Source Code](#systemsandservice)
+   * [Summary](#summary1)
 
 <a name="branches" />
 
@@ -213,6 +222,8 @@ This section describe how to add new components to the system. This is a step by
 
 Important: It is only supposed to illustrate how to add another component, like an additional sensor or actuator, and which classes from arrowhead-common have to be edited. 
 
+<a name="mavenmodule" />
+
 ### Create Maven Modules 
 
 Create a new Maven Module Project for each of the component. This section will describe how to add C1, but it is the same way for C2. As mentioned above, the name of C1 in the project structure is *arrowhead-consumer*, while C2 is *arrowhead-producer* and C0 is *arrowhead-client*. 
@@ -245,6 +256,8 @@ After selecting the correct Archetype click next, to come to the next window. In
 
 Click finish to integrate the Maven Module to the project. 
 
+<a name="folderstructure" />
+
 ### Create folder structure
 
 Create the following folder structure for C0 (arrowhead-client):
@@ -260,6 +273,7 @@ Create the following folder structure for C2 (arrowhead-producer):
 
 ![Folder Structure C2](/images/structureproducer.PNG)
 
+<a name="application" />
 
 ### Application.properties Files
 
@@ -371,7 +385,9 @@ server.ssl.trust-store=classpath:certificates/truststore.p12
 server.ssl.trust-store-password=123456
 ```
 
-### Add Components to Arrowhead 
+<a name="constants" />
+
+### Add Constants for Components to Arrowhead Source Code
 
 To be able to connect to Arrowhead, the information about the systems has to be added to the code. The properties for Service Registry, Authrization System and Orchestrator System can be found in *arrowhead-core-common/src/main/java/eu/arrowhead/common/CommonConstants.java*.
 
@@ -440,6 +456,7 @@ public interface MITConstants {
 	public static final String PARAMETER_ID = "id";
 ```
 
+<a name="functionalityc1" />
 
 ### Add Functionality to C1 
 
@@ -583,6 +600,7 @@ To be able to connect in further steps with C2 the class **[ConsumerConnection.j
 
 NOTE: The ConsumerApplicationInitListener.java, the AuthSwaggerConfig.java and the ConsumerConnection.java were taken over and adapted from the Arrowhead Source Code. 
 
+<a name="functionalityc2" />
 
 ### Add Functionality to C2
 
@@ -736,6 +754,7 @@ public class ProducerSensorControl {
 
 NOTE: The ProducerApplicationInitListener.java and the AuthSwaggerConfig.java  were taken over and adapted from the Arrowhead Source Code. 
 
+<a name="functionalityc0" />
 
 ### Add Functionality to C0
 
@@ -945,7 +964,7 @@ public class ClientProperties {
 NOTE: The ClientApplicationInitListener.java and the AuthSwaggerConfig.java  were taken over and adapted from the Arrowhead Source Code. 
 
 
-
+<a name="systemsandservice" />
 
 ### Add Systems and Services to Arrowhead
 
@@ -970,6 +989,8 @@ Looking at these inserted lines, it can be seen that these are the previously cr
 
 ATTENTION: C0 is the Workload Balancer, which is used to start testruns. This is the reason why it do not provide a service. 
 
+<a name="summary1" />
+
 ### Summary
 
 1. Create Maven Modules for C0, C1 and C2
@@ -977,6 +998,7 @@ ATTENTION: C0 is the Workload Balancer, which is used to start testruns. This is
 3. Create the application.properties files 
 4. Add Constants for C0, C1 and C2 to arrowhead-core-common 
 5. Add Functionality to C1
-7. Add Functionality to C2
-8. Add Functionality to C0
-9. Add Systems and Services to Arrowhead
+6. Add Functionality to C2
+7. Add Functionality to C0
+8. Add Systems and Services to Arrowhead
+9. Go to [how to start](#start)
