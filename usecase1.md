@@ -209,7 +209,9 @@ Following the results of a test run is shown by taking /client/run/2/1/6/1. Firs
 
 ## How to add C1 and C2
 
-1. Create a new Maven Module Project for each of the component. This section will describe how to add C1, but it is the same way for C2. As mentioned above, the name of C1 in the project structure is *arrowhead-consumer*, while C2 is *arrowhead-producer*. 
+### Create Maven Modules 
+
+Create a new Maven Module Project for each of the component. This section will describe how to add C1, but it is the same way for C2. As mentioned above, the name of C1 in the project structure is *arrowhead-consumer*, while C2 is *arrowhead-producer*. 
 To add such a project click on File --> New --> Project --> Select Maven Module like shown in the picture below. 
 
 
@@ -234,12 +236,165 @@ If the window looks like this, click next to select the Archetype. As Arrowhead 
 ![Select Archetype](/images/archetype.PNG)
 
 After selecting the correct Archetype click next, to come to the next window. In this window nothing has to be changed and it should look like this: 
+
 ![Finishing creation of New Maven Module](/images/groupid.PNG)
 
 Click finish to integrate the Maven Module to the project. 
 
+### Create folder structure
+
+Create the following folder structure for C1 (arrowhead-consumer): 
+
+![Folder Structure Consumer](/images/structureconsumer.PNG)
+
+Create the following folder structure for C2 (arrowhead-producer): 
+
+![Folder Structure Producer](/images/structureproducer.PNG)
+
+
+### Application.properties Files
+
+Fill the application.properties File with content. This means to add database connection, server address, ports and information like certificates, for the HTTPS connection. 
+
+application.properties File C1: 
+
+```
+spring.datasource.url=jdbc:mysql://127.0.0.1:3306/arrowhead?serverTimezone=Europe/Vienna  
+spring.datasource.username=yourusername
+spring.datasource.password=yourpassword
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.jpa.database-platform=org.hibernate.dialect.MySQL5InnoDBDialect
+spring.jpa.show-sql=false  
+spring.jpa.properties.hibernate.format_sql=false
+spring.jpa.hibernate.ddl-auto=none
+
+server.address=127.0.0.1
+server.port=2241
+core_system_name=CONSUMER
+#c2_address=127.0.0.1
+#c2_port=2242
+#c2_path=/get_array
+sr_address=127.0.0.1
+sr_port=2245
+#os_address=127.0.0.1
+#os_port=2243
+
+############################################
+###           SECURE MODE                ###
+############################################
+server.ssl.enabled=true
+server.ssl.key-store-type=PKCS12
+server.ssl.key-store=classpath:certificates/consumer.p12
+server.ssl.key-store-password=123456
+server.ssl.key-alias=consumer
+server.ssl.key-password=123456
+server.ssl.client-auth=need
+server.ssl.trust-store-type=PKCS12
+server.ssl.trust-store=classpath:certificates/truststore.p12
+server.ssl.trust-store-password=123456
+```
+
+application.properties File C2: 
+
+```
+spring.datasource.url=jdbc:mysql://127.0.0.1:3306/arrowhead?serverTimezone=Europe/Vienna  
+spring.datasource.username=yourusername
+spring.datasource.password=yourpassword
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.jpa.database-platform=org.hibernate.dialect.MySQL5InnoDBDialect
+spring.jpa.show-sql=false  
+spring.jpa.properties.hibernate.format_sql=false
+spring.jpa.hibernate.ddl-auto=none
+
+server.address=127.0.0.1
+server.port=2242
+core_system_name=PRODUCER
+sr_address=127.0.0.1
+sr_port=2245
+
+############################################
+###           SECURE MODE                ###
+############################################
+server.ssl.enabled=true
+server.ssl.key-store-type=PKCS12
+server.ssl.key-store=classpath:certificates/producer.p12
+server.ssl.key-store-password=123456
+server.ssl.key-alias=producer
+server.ssl.key-password=123456
+server.ssl.client-auth=need
+server.ssl.trust-store-type=PKCS12
+server.ssl.trust-store=classpath:certificates/truststore.p12
+server.ssl.trust-store-password=123456
+```
+### Add Functionality to C1 
+
+To be able to fulfil a task C1 requires a functionality, as C1 should simulate an air condition system. Therefore following classes are required: 
+
+![Overview classes consumer](/images/consumerclasses.PNG)
+
+In the package *eu.arrowhead.mit.consumer* the ApplicationListener, Controller and Main are located. To use Swagger the class **AuthSwaggerConfig.java* in the package *eu.arrowhead.mit.swagger* is required. To be able to connect in further steps with C2 the class **ConsumerConnection.java* in package *eu.arrowhead.mit.utils* is necessary. 
 
 
 
+### Add Components to Arrowhead 
+
+To be able to connect to Arrowhead, the information about the systems has to be added to the code. The properties for Service Registry, Authrization System and Orchestrator System can be found in *arrowhead-core-common/src/main/java/eu/arrowhead/common/CommonConstants.java*.
+
+![Overview Arrowhead CommonConstants.java ](/images/corecommon.PNG)
+
+To avoid changing the code of Arrowhead directly, the package *eu.arrwohead.common.mit* was added to the arrowhead-core-common module, which contains the class **MITConstants.java**. This file contains the properties of C1 and C2 and has the following structure: 
+ ```
+ package eu.arrowhead.common.mit;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
+public interface MITConstants {
+	/* --- Common constants --- */
+	public static final String SECURE_PROTOCOL = "https://";
+	public static final String INSECURE_PROTOCOL = "http://";
+	public static final String PORT_COLON = ":";
+	public static final String GET_REQUEST_METHOD = "GET";
+	public static final String ACCEPT_REQUEST_PROPERTY_KEYWORD = "Accept";
+	public static final String ACCEPT_REQUEST_PROPERTY_VALUE = "text/plain";
+	public static final String PROPERTY_FILE_NAME = "application.properties";
+	public static final DateFormat SDF = new SimpleDateFormat("[dd.MM.yyyy, HH:mm:ss.SSS]: ");
+	
+	public static final int MIT_MAX_TASKS = 1000;
+
+	/* --- Consumer constants --- */
+	public static final String PROPERTY_C1_ADDRESS = "c1_address";
+	public static final String PROPERTY_C1_PATH = "c1_path";
+	public static final String PROPERTY_C1_PORT = "c1_port";
+	
+	public static final String MIT_SYSTEM_CONSUMER = "Consumer";
+	public static final String MIT_CONSUMER_URI = "/consumer";
+	public static final String MIT_SERVICE_CLTC_ARRAY_SINGLE = "cltc_array_single";
+	public static final String MIT_CONSUMER_CLTC_ARRAY_SINGLE_URI = "/cltc_array_single/{runs}/{currentRun}";
+	public static final String MIT_CONSUMER_SYSTEM_NAME = "consumer";
+	
+	
+	/* --- Producer Constants --- */
+	public static final String PROPERTY_C2_ADDRESS = "c2_address";
+	public static final String PROPERTY_C2_PATH = "c2_path";
+	public static final String PROPERTY_C2_PORT = "c2_port";
+	
+	public static final String MIT_SYSTEM_PRODUCER = "Producer";
+	public static final String MIT_PRODUCER_URI = "/producer";
+	public static final String MIT_PRODUCER_SERVICE_GET_ARRAY = "get_array";
+	public static final String MIT_PRODUCER_GET_ARRAY_URI = "/get_array/{runs}/{currentRun}";
+	public static final String MIT_PRODUCER_GET_ARRAY_URI_CONNECTION = "/get_array";
+	public static final String MIT_PRODUCER_SYSTEM_NAME = "producer";
+	
+	/* --- Producer(C2) upper- and lower-boundaries for temperature measurement --- */
+	public static final double MAX_MEASUREMENT_VALUE = 30.0;
+	public static final double MIN_MEASUREMENT_VALUE = 20.0;
+	public static final double TEMPERATURE_LIMIT = 25.0;
+```
+
+
+### Swagger 
+
+To use swagger for C1 and C2 
 
 
