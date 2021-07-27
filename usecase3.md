@@ -113,7 +113,7 @@ In this section a Class Diagram is shown, which indicates how the Controller Cla
 
 ### How to start 
 
-1. Clone branch from Githab 
+1. Clone branch from Github 
 
 `` git clone --branch UseCase3 https://github.com/igo3r/MIT4.0.git ``
 
