@@ -126,7 +126,7 @@ In this section a Class Diagram is shown, which indicates how the Controller Cla
 ![XAMPP Control Panel](/images/xampp.PNG)
 
 
-4. Enter URL [http://127.0.0.1/phpmyadmin/](http://127.0.0.1/phpmyadmin/) in Browser
+4. Enter URL http://127.0.0.1/phpmyadmin/ in Browser
 
 5. Create Empty Arrowhead Database
    1. Click on SQL to enter Queries 
