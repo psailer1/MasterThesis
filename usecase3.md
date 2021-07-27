@@ -149,12 +149,12 @@ In this section a Class Diagram is shown, which indicates how the Controller Cla
 
   7. It can be tested by checking the SwaggerSide of the components, like shown in the Picture below for Service Registry. To go to swagger use the ip-addresses and ports from the first picture at the top of the side and put them in the URL line of the browser. If this sides are available, the systems work. Use 127.0.0.1:2245 to go to the Service Registry Swagger Webpage. As this use case use HTTP no certificates are needed. 
    
-   ![Swagger Service Registry](/images/swaggersr.PNG)
+   ![Swagger Service Registry](/images/swaggersr.png)
 
 
 7. Now it should similar to the pictures below. The Systems should be registered in Table *system_* (first picture) and the Services in Table *service_registry* (second picture). At this stage C1 and C2 are not able to communicate with each other. 
 
-![Table system_](/images/tablesystem_UC3.PNG)
+![Table system_](/images/tablesystemUC3.PNG)
 
 ![Table service_registry](/images/tableserviceregistry_UC3.PNG)
 
