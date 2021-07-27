@@ -153,7 +153,7 @@ In this section a Class Diagram is shown, which indicates how the Controller Cla
 
 8. Now it should similar to the pictures below. The Systems should be registered in Table *system_* (first picture) and the Services in Table *service_registry* (second picture). At this stage C1 and C2 are not able to communicate with each other. 
 
-![Table system_](/images/tablesystem_uc4.png)
+![Table system_](/images/tablesystem_UC4.png)
 
 ![Table service_registry](/images/tableserviceregistry_uc4.PNG)
 
@@ -176,10 +176,9 @@ In this section a Class Diagram is shown, which indicates how the Controller Cla
 ![Table orechstrator_store](/images/tableorchestratorstore_uc4.PNG)
 
 
-10. Now it should work. To test it enter https://127.0.0.1:2248 (C0) in the URL line of the browser to get to the Swagger of the **Arrowhead Client Core System**. 
+10. Now it should work. To test it enter 127.0.0.1:2258 (C0) in the URL line of the browser to get to the Swagger of the **Arrowhead Client Core System**. 
 
-![Arrowhead Client Core System](/images/client.PNG)
-
+![Arrowhead Client Core System](/images/client.png)
 11. Make the runs using Arrowhead Client Core System API. To do this, click on the *All* tab and go to the second method called **run**. This will start the workload balancer. Important to note is the following: 
    1. innerLoops: this number specifies how many measurements should be taken. It must be an even number, as half of the numbers are below and half are above the defined limit. A maximum of 1000 measurements can be performed. 
    2. innerTimeout: this number specifies how many milliseconds there should be a pause between the measurements. If you want to pause for one second, enter 1000. 
@@ -190,7 +189,7 @@ The URL for this is build as followed: /client/run/{outerLoop}/{outerTimeout}/{i
 
 Following the results of a test run is shown by taking /client/run/2/1/6/1. First the input is shown and afterwards the result. 
 
-![Swagger Client Test run](/images/testrunclient_uc4.PNG)
+![Swagger Client Test run](/images/testrunclient_UC4.PNG)
 
 ![Result of Test run](/images/outputtestruns.png)
 
