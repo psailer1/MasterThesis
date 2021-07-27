@@ -326,14 +326,6 @@ server.ssl.trust-store-type=PKCS12
 server.ssl.trust-store=classpath:certificates/truststore.p12
 server.ssl.trust-store-password=123456
 ```
-### Add Functionality to C1 
-
-To be able to fulfil a task C1 requires a functionality, as C1 should simulate an air condition system. Therefore following classes are required: 
-
-![Overview classes consumer](/images/consumerclasses.PNG)
-
-In the package *eu.arrowhead.mit.consumer* the ApplicationListener, Controller and Main are located. To use Swagger the class **AuthSwaggerConfig.java* in the package *eu.arrowhead.mit.swagger* is required. To be able to connect in further steps with C2 the class **ConsumerConnection.java* in package *eu.arrowhead.mit.utils* is necessary. 
-
 
 
 ### Add Components to Arrowhead 
@@ -393,8 +385,149 @@ public interface MITConstants {
 ```
 
 
-### Swagger 
+### Add Functionality to C1 
 
-To use swagger for C1 and C2 
+To be able to fulfil a task C1 requires a functionality, as C1 should simulate an air condition system. Therefore following classes are required: 
+
+![Overview classes consumer](/images/consumerclasses.PNG)
+
+In the package *eu.arrowhead.mit.consumer* the [ApplicationListener](https://github.com/igo3r/MIT4.0/blob/UseCase1/arrowhead-consumer/src/main/java/eu/arrowhead/mit/consumer/ConsumerApplicationInitListener.java), [Controller](https://github.com/igo3r/MIT4.0/blob/UseCase1/arrowhead-consumer/src/main/java/eu/arrowhead/mit/consumer/ConsumerController.java) and [Main](https://github.com/igo3r/MIT4.0/blob/UseCase1/arrowhead-consumer/src/main/java/eu/arrowhead/mit/consumer/ConsumerMain.java) are located. 
+
+**ConsumerMain.java** - required to start this Maven Module:
+
+```
+@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
+@ComponentScan(CommonConstants.BASE_PACKAGE)
+@EntityScan(CoreCommonConstants.DATABASE_ENTITY_PACKAGE)
+@EnableJpaRepositories(basePackages = CoreCommonConstants.DATABASE_REPOSITORY_PACKAGE, repositoryBaseClass = RefreshableRepositoryImpl.class)
+@EnableSwagger2
+public class ConsumerMain {
+
+	//=================================================================================================
+	// methods
+	
+	//-------------------------------------------------------------------------------------------------
+	public static void main(final String[] args) {
+		SpringApplication.run(ConsumerMain.class, args);
+	}
+}
+```
+
+**ConsumerApplicationInitListener.java** - spring boot application startup listener or init Method called when spring application will start. It will be called only once in spring boot application cycle: 
+```
+@Component
+public class ConsumerApplicationInitListener extends ApplicationInitListener{
+	@Autowired
+	private CommonDBService commonDBService; 
+	@Override
+	protected void customInit(final ContextRefreshedEvent event) {
+		logger.debug("customInit started...");
+		if (!isOwnCloudRegistered()) {
+			registerOwnCloud(event.getApplicationContext());
+		}
+	}
+	
+	private boolean isOwnCloudRegistered() {
+		logger.debug("isOwnCloudRegistered started...");
+		try {
+			commonDBService.getOwnCloud(sslProperties.isSslEnabled());
+			return true;
+		} catch (final DataNotFoundException ex) {
+			return false;
+		}
+	}
+	
+	private void registerOwnCloud(final ApplicationContext appContext) {
+		logger.debug("registerOwnCloud started...");
+			
+		if (!standaloneMode) {
+			String name = CoreDefaults.DEFAULT_OWN_CLOUD_NAME;
+			String operator = CoreDefaults.DEFAULT_OWN_CLOUD_OPERATOR;
+				
+			if (sslProperties.isSslEnabled()) {
+				@SuppressWarnings("unchecked")
+				final Map<String,Object> context = appContext.getBean(CommonConstants.ARROWHEAD_CONTEXT, Map.class);
+				final String serverCN = (String) context.get(CommonConstants.SERVER_COMMON_NAME);
+				final String[] serverFields = serverCN.split("\\.");
+				name = serverFields[1];
+				operator = serverFields[2];
+			}
+				
+			commonDBService.insertOwnCloud(operator, name, sslProperties.isSslEnabled(), null);
+			logger.info("{}.{} own cloud is registered in {} mode.", name, operator, getModeString());
+		}
+	}
+}
+```
+
+**ConsumerController.java** - this class contains the logic of C1: 
+```
+@Api(tags = { CoreCommonConstants.SWAGGER_TAG_ALL })
+@CrossOrigin(maxAge = Defaults.CORS_MAX_AGE, allowCredentials = Defaults.CORS_ALLOW_CREDENTIALS, allowedHeaders = {
+		HttpHeaders.ORIGIN, HttpHeaders.CONTENT_TYPE, HttpHeaders.ACCEPT, HttpHeaders.AUTHORIZATION })
+@RestController
+@RequestMapping(MITConstants.MIT_CONSUMER_URI)
+public class ConsumerController {
+	@Autowired
+	private ConsumerConnection cc;
+
+	@GetMapping(path = CommonConstants.ECHO_URI)
+	public String echoService() {
+		return "Got it!";
+	}
+	
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Runs: Please enter an even number between 0 and 1000 \n currentRun: Enter a number below runs."),
+			@ApiResponse(code = 406, message = "Please follow the instructions. You entered not acceptable numbers."),
+	})
+	@RequestMapping(value = MITConstants.MIT_CONSUMER_CLTC_ARRAY_SINGLE_URI, method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+	ResponseEntity<String> ClosedLoopTemperatureControlArraySingleEntry(@PathVariable int runs, @PathVariable int currentRun) {
+		String ret = "";
+		double temperatureValue = 0;
+		String ACSystem = MITConstants.MIT_AIR_CONDITIONING_SYSTEM_OFF;
+			try {
+				temperatureValue = Double.parseDouble(cc.getCLTCArrayService(runs, currentRun));
+				if (temperatureValue > MITConstants.TEMPERATURE_LIMIT) {
+					ACSystem = MITConstants.MIT_AIR_CONDITIONING_SYSTEM_ON;
+				} else {
+					ACSystem = MITConstants.MIT_AIR_CONDITIONING_SYSTEM_OFF;
+				}
+
+				ret += "\n Temperature Sensor: " + temperatureValue + " °C \n Air-Conditioning System: " + ACSystem
+						+ "\n";
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		return new ResponseEntity<String>(ret, HttpStatus.OK);
+	}
+}
+```
+
+
+To use Swagger the class **AuthSwaggerConfig.java** in the package *eu.arrowhead.mit.swagger* is required. Therefore the *MITConstants.MIT_SYSTEM_CONSUMER* must be used. 
+
+```
+@EnableSwagger2
+@Configuration
+public class AuthSwaggerConfig extends DefaultSwaggerConfig {
+	public AuthSwaggerConfig() {
+		super(MITConstants.MIT_SYSTEM_CONSUMER);
+	}
+
+	@Bean
+	public Docket customizeSwagger() {
+		return configureSwaggerForCoreSystem(this.getClass().getPackageName());
+	}
+}
+
+```
+
+To be able to connect in further steps with C2 the class **[ConsumerConnection.java](https://github.com/igo3r/MIT4.0/blob/UseCase1/arrowhead-consumer/src/main/java/eu/arrowhead/mit/utils/ConsumerConnection.java)** in package *eu.arrowhead.mit.utils* is necessary. This class is responsible for the connection to the orchestrator (Line 46 - 58) and the producer (Line 69 - 101). Further the service which should be used, is called in this class (Line 103 - 125)
+
+
+
+
+### Add Functionality to C2
+
 
 
