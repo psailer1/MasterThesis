@@ -1,6 +1,6 @@
-# Use Case 2
+# Final Prototype MIT 4.0
 
-In this file the Use Case 2 is described. Use Case 2 is implemented with the procedure of Scenario 2 and is considered for the local execution on one device. It used the protocol HTTPS, which means secure communication is possible between the components of the CPS. 
+In this file the Final Prototype of the MIT 4.0 project is described. IThe Final Prototype is implemented with the procedure of Scenario 2 and is considered for the execution on seven devices, each providing one system. It uses the protocol HTTPS, which means secure communication is possible between the components of the CPS. 
 
 ## Table of Contents
 
@@ -47,7 +47,7 @@ The table below gives an overview of the other branches with a link to each of t
 
 The figure shows the procedure within the CPS between the components. 
 
-![Use Case 2](/images/finalprototype.png)
+![Use Case 2](/images/finalprototype1.png)
 
 Like shown in the picture the final prototype consists of six devices, in this case Raspberry Pi 3 Model B+. Following table shows the ip addresses and ports of the devices: 
 
@@ -126,7 +126,7 @@ In this section a Class Diagram is shown, which indicates how the Controller Cla
 
 1. Clone branch from Githab 
 
-`` git clone --branch UseCase2 https://github.com/igo3r/MIT4.0.git ``
+`` git clone --branch final_prototype https://github.com/igo3r/MIT4.0.git ``
 
 2. Open Development Environment like Eclipse or IntelliJ and import as *existing Maven Project*
 
