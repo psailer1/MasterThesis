@@ -1,6 +1,6 @@
 # Final Prototype MIT 4.0
 
-In this file the Final Prototype of the MIT 4.0 project is described. IThe Final Prototype is implemented with the procedure of Scenario 2 and is considered for the execution on seven devices, each providing one system. It uses the protocol HTTPS, which means secure communication is possible between the components of the CPS. 
+In this file the Final Prototype of the MIT 4.0 project is described. The Final Prototype is implemented with the procedure of Scenario 2 and is considered for the execution on seven devices, each providing one system. It uses the protocol HTTPS, which means secure communication is possible between the components of the CPS. 
 
 ## Table of Contents
 
@@ -11,8 +11,10 @@ In this file the Final Prototype of the MIT 4.0 project is described. IThe Final
    * [Workload Balancer](#workload)
    * [Maven Project](#maven)
    * [Class Diagram](#class)
+4. [How to build the prototype](#prototype)
+   * [How to setup the hardware](#hardware)
    * [How to start with Github Code](#start)
-4. [How to add C0, C1 and C2](#addcomponents)
+6. [How to add C0, C1 and C2](#addcomponents)
    * [Create Maven Module](#mavenmodule)
    * [Create folder Structure for Components](#folderstructure)
    * [Create application.properties Files](#application)
@@ -120,6 +122,50 @@ In this section a Class Diagram is shown, which indicates how the Controller Cla
 ![Class Diagram Use Case 2](/images/ClassdiagrammUC2and4andfinal.png)
 
 
+<a name="prototype" />
+
+## How to build the prototype
+
+As mentioned before the prototype contains of seven devices. To illustrate this, the first prototype **Leni 1.0** developed is used, as shown in the figure below. It should be noted, there is no C0 drawn in, this is the reason why online six Raspberry Pi are shown. The C0 is running on a Laptop, this is the reason why it is excluded on this figure.  
+
+
+![Leni 1.0](/images/leni10.PNG)
+
+In the first prototype **Leni 1.0**, the air condition was also simulated and the temperature values were read from the defined arrays, as in Branches Use Case 1 - 4. This branch deals with the final prototype, which actually measures the environment using a temperature sensor and then changes it using a ventilator. The approach is explained in the following. 
+
+<a name="hardware" />
+
+### How to setup the hardware 
+
+1. The hardware must be purchased, please follow the links below. 
+
+| Technology | Version | Link |
+| ---------- | ------ | ---- |
+| Raspberry Pi | Model 3 B + | [Purchase](https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/) |
+| PiLogger One |  1.0 | [Purchase](https://www.pilogger.eu/) |
+| Router |  e.g. Ubiquiti Networks ES-8-150W EdgeSwitch | [Purchase](https://www.amazon.de/Ubiquiti-Networks-ES-8-150W-EdgeSwitch-8-150W-Schwarz/dp/B01JP7EQI0)
+
+We used six Rapsberry Pis for the three Arrowhead Core Systems, C1 and C2. For this five Raspberry Pis PiLogger are required for the power consumption measurements. Further C1 uses the PiLogger to integrate a temperature sensor. 
+The sixth Rapsberry Pi is the database, whereby this can alternatively be run on the laptop with C0 or virtualised, for example as a VM. If the laptop is used with C0, the IP address must be changed in the application.properties files. Since the power consumption was not important for us, the database does not have to be equipped with a PiLogger, but of course this can be done. 
+The Raspberry Pis are connected via LAN, therefore a router is required. It is possible to run it via WLAN, but then the IP addresses must be adapted.
+
+2. Load an image on the Raspberry Pis. 
+Initially, the image Rasbian Buster 10 Lite OS (without GUI) was loaded from ([Link](https://www.raspberrypi.org/software/operating-systems/)) and afterwards flashed onto the supplied SD card using a software like BalenaEtcha ([Link](https://www.balena.io/etcher/)).
+
+![Balena Etcher](/images/balenaetcher.PNG)
+
+
+3. Configure the Rapsberry Pis
+   1. Enable SSH and I2C (for PiLogger One)
+   2. Activate WLAN to download PiLogger Software and some required Software like Java
+   3. Follow the installation instructions of the PiLogger One and make all the necessary settings according it. Installation Instruction can be found [here](https://www.pilogger.de/index.php/en/download-en/send/3-documentation/2-manual-pilogger-one) in English. 
+   5. For the usage of PiLogger Webmonitor please follow the [Installation Guide](https://www.pilogger.de/index.php/de/download-de/send/3-documentation/14-anleitung-pilogger-webmonitor). Attention: How to configure the PiLogger is available in English, the *Anleitung PiLogger WebMonitor* is available only in German.  
+   6. Configure the network on the Raspberry Pis so that the eth0 interfaces have the correct ip addresses (10.20.30.1 - 10.20.30.6). Instructions can be found [here](https://www.mathworks.com/help/supportpkg/raspberrypi/ug/getting-the-raspberry_pi-ip-address.html). 
+   7. Install java 
+   	sudo apt update
+	sudo apt install default-jdk -y
+
+
 <a name="start" />
 
 ### How to start with Github Code
@@ -148,7 +194,31 @@ In this section a Class Diagram is shown, which indicates how the Controller Cla
 
 ![Structure Arrowhead Database](/images/emptydatabase.PNG)
 
-6. Start Components of the project. Attention, please follow the noted sequence, else the script for database dependencies will not work, as there are other ids for the systems and services: 
+6. To start Arrowhead the Source Code needs to be transferred to the Raspberry Pis . Therefore, Maven is used to create jar-File. 
+   Go to the folder of the source code (use CMD in Windows or Shell in Linux or the Development Environment) and execute following maven statement: 
+   ``` mvn install -DskipTests   ```	
+    
+   If the command was executed successfully, it should look similar to the following picture:
+   
+![Successful Maven Build](/images/maven.PNG)
+
+This command causes a target folder to be created in all modules in which, among other things, a jar file has been generated. 
+
+![Target Folder in Service Registry Module](/images/srtarget.PNG)
+
+. This jar file now needs to be transferred to the Raspberry Pi. To do this, a remote connection can be set up via the development environment or programs such as WINSCP (download) can be used. For WinSCP a connection must be established, and afterwards the files can be moved with drag and drop from local environment to Rapsberry Pi. ATTENTION: Move the correct jar-file to the correct Rapsberry, e.g. Consumer jar-file needs to be transferred to 10.20.30.1 (see pictures below). 
+
+
+![Establish Connection WinSCP to Consumer (10.20.30.1)](/images/winscp1.PNG)
+
+![Move File from local environment to Rapsberry Pi](/images/winscp2.PNG)
+
+
+7. Start Components of the project on each Raspberry Pi by using the command
+
+	```java  -javaagent:LOCATION_PINPOINT_AGENT.jar -Dpinpoint.agentId=AGENT_ID -Dpinpoint.applicationName=AGENT_NAME -jar LOCATION_ARROWHEAD_SYSTEM ```
+	
+   Attention, please follow the noted sequence, else the script for database dependencies will not work, as there are other ids for the systems and services: 
    1. ServiceRegistryMain.java
    2. AuthorizationMain.java
    3. OrchestratorMain.java
@@ -162,7 +232,7 @@ In this section a Class Diagram is shown, which indicates how the Controller Cla
 
 Attention: in this Branch HTTPS is used. Therefore you have to add https:// in front of the IP-Address, like https://10.20.30.5:1235, else you will get following errormessage: 
 
-![Error message if https:// is missing](/images/errormessageHTTPS.PNG)
+![Error message if https:// is missing](/images/errormessageHTTPS_final.PNG)
 
   By entering the correct URL you will get an "Certificate" Error, because for using HTTPS certificates are required. For each system the certificates are located in the src/main/ressource/certificate folder. The picture below shows the location of the Service Registry Certificate. 
    
@@ -174,21 +244,21 @@ Attention: in this Branch HTTPS is used. Therefore you have to add https:// in f
    
    Then click on Import and browse to the location where the cloned Github project is located. Then go to the cerficate folder in src/main/ressources and import the certificate. Afterwards you can enter the URL again and the browser will ask which certificate to use, like shown on the picture below. 
    
-   ![Select Certificate](/images/importcertificate2.PNG)
+   ![Select Certificate](/images/importcertificate2_final.PNG)
    
    Click ok and now the Swagger Webpage should appear. 
    
-   ![Swagger Service Registry](/images/serviceregistryswaggerhttps.PNG)
+   ![Swagger Service Registry](/images/serviceregistryswaggerhttps_final.PNG)
 
 
 7. Now it should similar to the pictures below. The Systems should be registered in Table *system_* (first picture) and the Services in Table *service_registry* (second picture). At this stage C1 and C2 are not able to communicate with each other. 
 
-![Table system_](/images/tablesystem_UC2.png)
+![Table system_](/images/tablesystem_.PNG)
 
-![Table service_registry](/images/tableserviceregistry.PNG)
+![Table service_registry](/images/tableservice_registry.PNG)
 
 
-![Table service_definition](/images/tableservicedefinition.PNG)
+![Table service_definition](/images/tableservice_definition.PNG)
 
 8. After all systems are started successfully go back to script folder. 
    1. Copy content from file *database_dependencies.sql*
@@ -198,17 +268,17 @@ Attention: in this Branch HTTPS is used. Therefore you have to add https:// in f
       *  authorization_intra_cloud_interface_connection
       *  orechstrator_store
 
-![Table authorization_intra_cloud](/images/tableauthorizationintracloud.PNG)
+![Table authorization_intra_cloud](/images/tableauthorization_intra_cloud.PNG)
 
-![Table authorization_intra_cloud_interface_connection](/images/tableauthorizationintracloudinterfaceconnection.PNG)
+![Table authorization_intra_cloud_interface_connection](/images/tableauthorization_intra_cloud_interface_connection.PNG)
 
 
-![Table orechstrator_store](/images/tableorchestratorstore.PNG)
+![Table orechstrator_store](/images/tableorchestrator_store.PNG)
 
 
 8. Now it should work. To test it enter https://10.20.30.23:1239 (C0) in the URL line of the browser to get to the Swagger of the **Arrowhead Client Core System**. 
 
-![Arrowhead Client Core System](/images/clientHTTPS.PNG)
+![Arrowhead Client Core System](/images/clientfinal.PNG)
 
 9. Make the runs using Arrowhead Client Core System API. To do this, click on the *All* tab and go to the second method called **run**. This will start the workload balancer. Important to note is the following: 
    1. innerLoops: this number specifies how many measurements should be taken. It must be an even number, as half of the numbers are below and half are above the defined limit. A maximum of 1000 measurements can be performed. 
