@@ -14,6 +14,7 @@ In this file the Final Prototype of the MIT 4.0 project is described. The Final 
 4. [How to build the prototype](#prototype)
    * [How to setup the hardware](#hardware)
    * [How to start with Github Code](#start)
+   * [Application.properties Files](#applicationfile)
 6. [How to add C0, C1 and C2](#addcomponents)
    * [Create Maven Module](#mavenmodule)
    * [Create folder Structure for Components](#folderstructure)
@@ -24,6 +25,7 @@ In this file the Final Prototype of the MIT 4.0 project is described. The Final 
    * [Add Functionality to C0](#functionalityc0)
    * [Add Systems and Services to Arrowhead Source Code](#systemsandservice)
    * [Summary](#summary1)
+7. [Pictures final prototype](#pictures)
 
 <a name="branches" />
 
@@ -164,6 +166,7 @@ Initially, the image Rasbian Buster 10 Lite OS (without GUI) was loaded from ([L
    7. Install java 
    	sudo apt update
 	sudo apt install default-jdk -y
+  8. Install Pinpoint. Instructions can be found [here](https://github.com/pinpoint-apm/pinpoint/blob/master/doc/installation.md). It is recommended to name the PinPoint agents with the system names. 
 
 
 <a name="start" />
@@ -228,7 +231,7 @@ This command causes a target folder to be created in all modules in which, among
 
 ![Successful start AuthorizationMain.java](/images/successfulstartHTTPS.PNG)
 
-  7. It can be tested by checking the SwaggerSide of the components, like shown in the Picture below for Service Registry. To go to swagger use the ip-addresses and ports from the first picture at the top of the side and put them in the URL line of the browser. If this sides are available, the systems work. 
+  8. It can be tested by checking the SwaggerSide of the components, like shown in the Picture below for Service Registry. To go to swagger use the ip-addresses and ports from the first picture at the top of the side and put them in the URL line of the browser. If this sides are available, the systems work. 
 
 Attention: in this Branch HTTPS is used. Therefore you have to add https:// in front of the IP-Address, like https://10.20.30.5:1235, else you will get following errormessage: 
 
@@ -251,7 +254,7 @@ Attention: in this Branch HTTPS is used. Therefore you have to add https:// in f
    ![Swagger Service Registry](/images/serviceregistryswaggerhttps_final.PNG)
 
 
-7. Now it should similar to the pictures below. The Systems should be registered in Table *system_* (first picture) and the Services in Table *service_registry* (second picture). At this stage C1 and C2 are not able to communicate with each other. 
+9. Now it should similar to the pictures below. The Systems should be registered in Table *system_* (first picture) and the Services in Table *service_registry* (second picture). At this stage C1 and C2 are not able to communicate with each other. 
 
 ![Table system_](/images/tablesystem_.PNG)
 
@@ -260,7 +263,7 @@ Attention: in this Branch HTTPS is used. Therefore you have to add https:// in f
 
 ![Table service_definition](/images/tableservice_definition.PNG)
 
-8. After all systems are started successfully go back to script folder. 
+10. After all systems are started successfully go back to script folder. 
    1. Copy content from file *database_dependencies.sql*
    2. Paste the content into the SQL Query field and execute
    3. Following table will be updated, like shown in the figures below: 
@@ -276,11 +279,11 @@ Attention: in this Branch HTTPS is used. Therefore you have to add https:// in f
 ![Table orechstrator_store](/images/tableorchestrator_store.PNG)
 
 
-8. Now it should work. To test it enter https://10.20.30.23:1239 (C0) in the URL line of the browser to get to the Swagger of the **Arrowhead Client Core System**. 
+11. Now it should work. To test it enter https://10.20.30.23:1239 (C0) in the URL line of the browser to get to the Swagger of the **Arrowhead Client Core System**. 
 
 ![Arrowhead Client Core System](/images/clientfinal.PNG)
 
-9. Make the runs using Arrowhead Client Core System API. To do this, click on the *All* tab and go to the second method called **run**. This will start the workload balancer. Important to note is the following: 
+12. Make the runs using Arrowhead Client Core System API. To do this, click on the *All* tab and go to the second method called **run**. This will start the workload balancer. Important to note is the following: 
    1. innerLoops: this number specifies how many measurements should be taken. It must be an even number, as half of the numbers are below and half are above the defined limit. A maximum of 1000 measurements can be performed. 
    2. innerTimeout: this number specifies how many milliseconds there should be a pause between the measurements. If you want to pause for one second, enter 1000. 
    3. outerLoop: this number indicates how many test runs are to be made. For each test run, the specified number of InnerLoops will be measured. If you enter 10 here and 20 for InnerLoop, then 10 times 20 measurements are carried out. 
@@ -295,11 +298,127 @@ Following the results of a test run is shown by taking /client/run/2/1/6/1. Firs
 ![Result of Test run](/images/outputtestruns.png)
 
 
+<a name="applicationfile" />
+
+### Application.properties Files
+
+In this files the difference to the other branches is obvious, as all ip adresses are different. 
+
+Service Registry System - application.properties file: 
+
+```
+spring.datasource.url=jdbc:mysql://10.20.30.6:3306/arrowhead?serverTimezone=Europe/Vienna  
+spring.datasource.username=mitadmin
+spring.datasource.password=mit
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.jpa.database-platform=org.hibernate.dialect.MySQL5InnoDBDialect
+spring.jpa.show-sql=false
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.hibernate.ddl-auto=none
+
+# Service Registry web-server parameters
+server.address=10.20.30.5
+server.port=1235
+core_system_name=SERVICE_REGISTRY
+
+############################################
+###           SECURE MODE                ###
+############################################
+server.ssl.enabled=true
+server.ssl.key-store-type=PKCS12
+server.ssl.key-store=classpath:certificates/service_registry.p12
+server.ssl.key-store-password=123456
+server.ssl.key-alias=service_registry
+server.ssl.key-password=123456
+server.ssl.client-auth=need
+server.ssl.trust-store-type=PKCS12
+server.ssl.trust-store=classpath:certificates/truststore.p12
+server.ssl.trust-store-password=123456
+```
+
+Authorisation System - application.properties file: 
+
+```
+spring.datasource.url=jdbc:mysql://10.20.30.6:3306/arrowhead?serverTimezone=Europe/Vienna  
+spring.datasource.username=yourusername
+spring.datasource.password=yourpassword
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.jpa.database-platform=org.hibernate.dialect.MySQL5InnoDBDialect
+spring.jpa.show-sql=false
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.hibernate.ddl-auto=none
+
+# Authorization web-server parameters
+
+server.address=10.20.30.4
+server.port=1234
+core_system_name=AUTHORIZATION
+sr_address=10.20.30.5
+sr_port=1235
+
+############################################
+###           SECURE MODE                ###
+############################################
+server.ssl.enabled=true
+server.ssl.key-store-type=PKCS12
+server.ssl.key-store=classpath:certificates/authorization.p12
+server.ssl.key-store-password=123456
+server.ssl.key-alias=authorization
+server.ssl.key-password=123456
+server.ssl.client-auth=need
+server.ssl.trust-store-type=PKCS12
+server.ssl.trust-store=classpath:certificates/truststore.p12
+server.ssl.trust-store-password=123456
+```
+
+Orchestration System - application.properties file: 
+
+```
+############################################
+###       APPLICATION PARAMETERS         ###
+############################################
+spring.datasource.url=jdbc:mysql://10.20.30.6:3306/arrowhead?serverTimezone=Europe/Vienna  
+spring.datasource.username=yourusername
+spring.datasource.password=yourpassword
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+spring.jpa.database-platform=org.hibernate.dialect.MySQL5InnoDBDialect
+spring.jpa.show-sql=false
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.hibernate.ddl-auto=none
+
+# Orchestrator web-server parameters
+server.address=10.20.30.3
+server.port=1233
+core_system_name=ORCHESTRATOR
+sr_address=10.20.30.5
+sr_port=1235
+
+############################################
+###           SECURE MODE                ###
+############################################
+server.ssl.enabled=true
+server.ssl.key-store-type=PKCS12
+server.ssl.key-store=classpath:certificates/orchestrator.p12
+server.ssl.key-store-password=123456
+server.ssl.key-alias=orchestrator
+server.ssl.key-password=123456
+server.ssl.client-auth=need
+server.ssl.trust-store-type=PKCS12
+server.ssl.trust-store=classpath:certificates/truststore.p12
+server.ssl.trust-store-password=123456
+```
+
+It is important to mention that the certificates must as well be adapted to the IP addresses. These were created specifically for the selected IP addresses. If other IP addresses are used, new certificates must be created. 
+
+
 <a name="addcomponents" />
 
 ## How to add C0, C1 and C2
 
 This section describe how to add new components to the system. This is a step by step guide on how C0, C1 and C2 were implemented to see how new components are added. By downloading only the code from the Master Branch, it is possible to add these components. ATTENTION: not all classes have been added completely, as they are included in the branch. If you want to rebuild the Branch, please go to the linked classes to copy them. 
+
+The difference to the other branches is the usage of two services instead of one on C1. 
 
 Important: It is only supposed to illustrate how to add another component, like an additional sensor or actuator, and which classes from arrowhead-common have to be edited. 
 
@@ -363,7 +482,7 @@ Fill the application.properties File with content. This means to add database co
 application.properties File C0: 
 
 ```
-spring.datasource.url=jdbc:mysql://127.0.0.1:3306/arrowhead?serverTimezone=Europe/Vienna  
+spring.datasource.url=jdbc:mysql://10.20.30.6:3306/arrowhead?serverTimezone=Europe/Vienna  
 spring.datasource.username=yourusername
 spring.datasource.password=yourpassword
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
@@ -379,10 +498,16 @@ core_system_name=CLIENT
 sr_address=127.0.0.1
 sr_port=2245
 
+server.address=10.20.30.23
+server.port=1239
+core_system_name=CLIENT
+sr_address=10.20.30.5
+sr_port=1235
+
 # ******************* Scenario 2 **********************
-c2_address=127.0.0.1
+c2_address=10.20.30.2
 c2_path=producer/get_temperature
-c2_port=2242
+c2_port=1232
 
 # ******************* SECURE **********************
 server.ssl.enabled=true
@@ -402,7 +527,7 @@ In the C0 file it is important to give information about the endpoint of the sys
 application.properties File C1: 
 
 ```
-spring.datasource.url=jdbc:mysql://127.0.0.1:3306/arrowhead?serverTimezone=Europe/Vienna  
+spring.datasource.url=jdbc:mysql://10.20.30.6:3306/arrowhead?serverTimezone=Europe/Vienna  
 spring.datasource.username=yourusername
 spring.datasource.password=yourpassword
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
@@ -411,11 +536,11 @@ spring.jpa.show-sql=false
 spring.jpa.properties.hibernate.format_sql=false
 spring.jpa.hibernate.ddl-auto=none
 
-server.address=127.0.0.1
-server.port=2241
+server.address=10.20.30.1
+server.port=1231
 core_system_name=CONSUMER
-sr_address=127.0.0.1
-sr_port=2245
+sr_address=10.20.30.5
+sr_port=1235
 
 # ******************* SECURE **********************
 server.ssl.enabled=true
@@ -434,7 +559,7 @@ server.ssl.trust-store-password=123456
 application.properties File C2: 
 
 ```
-spring.datasource.url=jdbc:mysql://127.0.0.1:3306/arrowhead?serverTimezone=Europe/Vienna  
+spring.datasource.url=jdbc:mysql://10.20.30.6:3306/arrowhead?serverTimezone=Europe/Vienna  
 spring.datasource.username=yourusername
 spring.datasource.password=yourpassword
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
@@ -443,16 +568,16 @@ spring.jpa.show-sql=false
 spring.jpa.properties.hibernate.format_sql=false
 spring.jpa.hibernate.ddl-auto=none
 
-server.address=127.0.0.1
-server.port=2242
+server.address=10.20.30.2
+server.port=1232
 core_system_name=PRODUCER
-sr_address=127.0.0.1
-sr_port=2245
-os_address=127.0.0.1
-os_port=2243
-c1_address=127.0.0.1
+c1_address=10.20.30.1
 c1_path=/on_ac
-c1_port=2241
+c1_port=1231
+sr_address=10.20.30.5
+sr_port=1235
+os_address=10.20.30.3
+os_port=1233
 
 ############################################
 ###           SECURE MODE                ###
@@ -501,6 +626,8 @@ public interface MITConstants {
 	public static final String MIT_CONSUMER_URI = "/consumer";
 	public static final String MIT_CONSUMER_SERVICE_TURN_ON = "turn_aircondition_on"; 
 	public static final String MIT_CONSUMER_SERVICE_TURN_ON_URI = "/turn_aircondition_on"; 
+	public static final String MIT_CONSUMER_SERVICE_TURN_OFF = "turn_aircondition_off"; 
+	public static final String MIT_CONSUMER_SERVICE_TURN_OFF_URI = "/turn_aircondition_off"; 	
 	public static final String MIT_CONSUMER_SYSTEM_NAME = "consumer";
 	
 	/* --- Producer Constants --- */
@@ -636,6 +763,11 @@ public class ConsumerController {
 	ResponseEntity<String> turnAirConditionOn() {
 		return new ResponseEntity<String>(cac.turnAirConditionOn(), HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = MITConstants.MIT_CONSUMER_SERVICE_TURN_OFF_URI, method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+	ResponseEntity<String> turnAirConditionOff() {
+		return new ResponseEntity<String>(cac.turnAirConditionOff(), HttpStatus.OK);
+	}
 }
 ```
 
@@ -658,28 +790,55 @@ public class AuthSwaggerConfig extends DefaultSwaggerConfig {
 
 ```
 
-ConsumerAirCondition.java - this class simulates turning on and off of the air condition:
+ConsumerAirCondition.java - this class turns on and off of the air condition:
 
 ```
+
 @Component
 public class ConsumerAirCondition {
-  public ConsumerAirCondition() {}
+	// this class will be extended with the code for the air conditioner
+	boolean status = false; 
+	
+	public ConsumerAirCondition() {}
 	
 	public ConsumerAirCondition(boolean airCondition) { 
 	}
 	
-	public void setAirCondition(boolean airCondition) { 
+	public boolean isStatus() {
+		return status;
 	}
-	
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
 	public String turnAirConditionOn() { 
-		setAirCondition(true); 
 		String ret = "ON"; 
+		try {
+			if(isStatus() == false) {
+				// necessary to turn on the Light Bulb
+				Runtime.getRuntime().exec("/home/pi/PowerPlug/sem-6000.exp AC --on");
+			}
+			setStatus(true); 
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 		return ret; 
 	}
 	
 	public String turnAirConditionOff() {
-		setAirCondition(true); 
 		String ret = "OFF"; 
+		try {
+			if(isStatus() == true) {
+			// necessary to turn off the Light Bulb
+			Runtime.getRuntime().exec("/home/pi/PowerPlug/sem-6000.exp AC --off");
+			}
+			setStatus(false); 
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 		return ret; 
 	}
 }
@@ -778,27 +937,20 @@ public class ProducerController {
 		return "Got it!";
 	}
 
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Runs: Please enter an even number between 0 and 1000 \n currentRun: Enter a number below runs."),
-			@ApiResponse(code = 406, message = "Please follow the instructions. You entered not acceptable numbers."), })
 	@RequestMapping(value = MITConstants.MIT_PRODUCER_GET_TEMPERATURE_URI, method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
-	ResponseEntity<String> emperatureArraySingleEntry(@PathVariable int runs, @PathVariable int currentRun)
+	ResponseEntity<String> TemperatureAndAirCondition()
 			throws IOException {
 		String ret = "";
-		int runBound = runs / 2;
-		ProducerTempGenerator ptg = new ProducerTempGenerator();
-		double temperatureValue = ptg.getTemperature();
-		if (runs <= 1000 && currentRun <= runs && (runs % 2 == 0)) {
-			temperatureValue = ptg.getTemperatureArray(currentRun - 1, runBound);
+		ProducerTempSensor pts = new ProducerTempSensor(); 
+		double temperatureValue = pts.getTempFromSensor(); 
+		
 			if (temperatureValue >= MITConstants.TEMPERATURE_LIMIT) {
 				ret = "\n Temperature Sensor: " + temperatureValue + " °C" + "\n" + " Air-Conditioning System: "
 						+ pc.turnAirConditionOn() + "\n";
-			} else {
-				ret = "\n Temperature Sensor: " + temperatureValue + " °C" + "\n" + " Air-Conditioning System: OFF \n";
+			} else if(temperatureValue < MITConstants.TEMPERATURE_LIMIT){
+				ret = "\n Temperature Sensor: " + temperatureValue + " °C" + "\n" + " Air-Conditioning System: "
+						+ pc.turnAirConditionOff()+ "\n";
 			}
-		} else {
-			ret = "Please enter an even number between 1 and 1000!";
-		}
 
 		return new ResponseEntity<String>(ret, HttpStatus.OK);
 	}
@@ -826,30 +978,8 @@ public class AuthSwaggerConfig extends DefaultSwaggerConfig {
 
 The package *eu.arrowhead.mit.utils* contains the class **ProducerConnection.java** and **ProducerTempGenerator.java**. The **ProducerConnection.java** is necessary to be able to connect in further steps with C1. This class is responsible for the connection to the orchestrator (Line 46 - 58) and the consumer (Line 68 - 100). Further the service which should be used, is called in this class (Line 103 - 125)
 
-The **ProducerTempGenerator.java** class simulates the measurement of the physical environment. It is defined, that half of the testruns, which will be conducted, have a value below the limit of 25 degrees, while the other half is above. This ensures, that the testruns are compareable. Therefore, two arrays (VALUES_TEMPERATURE_HIGH and VALUES_TEMPERATURE_LOW) are added to *arrowhead-core-common/src/main/java/eu/arrowhead/common/mit/MITConstants.java* (Line 74 and 76) with 500 values each. This means a maximum of 1000 inner loops can be performed. 
+The **ProducerTempGenerator.java** class reads the temperature value from an csv File, in which the PiLogger One writes the current temperature value. 
 
-```
-public class ProducerTempGenerator {
-	double maxValue = MITConstants.MAX_MEASUREMENT_VALUE;
-	double minValue = MITConstants.MIN_MEASUREMENT_VALUE;
-
-	public double getTemperature() {
-		Random r = new Random();
-		double value = (r.nextInt((int) ((maxValue - minValue) * 10 + 1)) + minValue * 10) / 10.0;
-		return value;
-	}
-
-	public double getTemperatureArray(int runs, int runBound) {
-		double temperature = 0.0;
-		if (runs < runBound) {
-			temperature = MITConstants.VALUES_TEMPERATURE_LOW[runs];
-		} else {
-			temperature = MITConstants.VALUES_TEMPERATURE_HIGH[runs - runBound];
-		}
-		return temperature;
-	}
-}
-```
 
 NOTE: The ProducerApplicationInitListener.java and the AuthSwaggerConfig.java  were taken over and adapted from the Arrowhead Source Code. 
 
@@ -1073,19 +1203,21 @@ Previous the properties of C1 and C2 were added to the MITConstants.java Class. 
 Go to *arrowhead-core-common/src/main/java/eu/arrowhead/common/core/CoreSystemService.java* and add following lines after **ORCHESTRATION_SERVICE*** (Line 21):
 
 ```
-CONSUMER_CLTC_ARRAY_SINGLE_SERVICE(MITConstants.MIT_SERVICE_CLTC_ARRAY_SINGLE, MITConstants.MIT_CONSUMER_URI + MITConstants.MIT_CONSUMER_CLTC_ARRAY_SINGLE_URI),
-PRODUCER_GET_ARRAY_SERVICE(MITConstants.MIT_PRODUCER_SERVICE_GET_ARRAY, MITConstants.MIT_PRODUCER_URI + MITConstants.MIT_PRODUCER_GET_ARRAY_URI_CONNECTION);
+CONSUMER_TURN_ON_SERVICE(MITConstants.MIT_CONSUMER_SERVICE_TURN_ON, MITConstants.MIT_CONSUMER_URI + MITConstants.MIT_CONSUMER_SERVICE_TURN_ON_URI),
+CONSUMER_TURN_OFF_SERVICE(MITConstants.MIT_CONSUMER_SERVICE_TURN_OFF, MITConstants.MIT_CONSUMER_URI + MITConstants.MIT_CONSUMER_SERVICE_TURN_OFF_URI),
+PRODUCER_GET_TEMPERATURE_SERVICE(MITConstants.MIT_PRODUCER_SERVICE_GET_TEMPERATURE, MITConstants.MIT_PRODUCER_URI + MITConstants.MIT_PRODUCER_GET_TEMPERATURE_URI);
 ```
+In contrast to the other branches, the consumer in the final prototype has two services, one to switch on the air conditioning and one to switch it off. Therefore one line needs to be entered for each service. 
 
 Go to *arrowhead-core-common/src/main/java/eu/arrowhead/common/core/CoreSystem.java* and add following lines at the beginning before SERVICE_REGISTRY:
 
 ```
-CONSUMER(MITConstants.MIT_DEFAULT_CONSUMER_PORT, List.of(CoreSystemService.CONSUMER_CLTC_ARRAY_SINGLE_SERVICE)),
-PRODUCER(MITConstants.MIT_DEFAULT_PRODUCER_PORT, List.of(CoreSystemService.PRODUCER_GET_ARRAY_SERVICE)),
+CONSUMER(MITConstants.MIT_DEFAULT_CONSUMER_PORT, List.of(CoreSystemService.CONSUMER_TURN_ON_SERVICE, CoreSystemService.CONSUMER_TURN_OFF_SERVICE)),
+PRODUCER(MITConstants.MIT_DEFAULT_PRODUCER_PORT, List.of(CoreSystemService.PRODUCER_GET_TEMPERATURE_SERVICE)),
 CLIENT(MITConstants.MIT_DEFAULT_CLIENT_PORT, null),
 ```
 
-Looking at these inserted lines, it can be seen that these are the previously created constants from the **MITConstants.java** class. By adding the services (provided by C1 and C2) to the class **CoreSystemService.java**, the they are added with their Uri, under which each service can be reached. In **CoreSystem.java**, the systems themselves are created with the services that are provided. It is important to mention that a line must be added to **CoreSystemService.java** for each service provided, however, this service must only be added to **CoreSystem.java** for the providing system. Since both C1 and C2 only provide one service each, such a listing can be viewed at the Authorisation System (**CoreSystemService.java** Line 14 to 18 and **CoreSystem.java** Line 21 to 23).
+Looking at these inserted lines, it can be seen that these are the previously created constants from the **MITConstants.java** class. By adding the services (provided by C1 and C2) to the class **CoreSystemService.java**, the they are added with their Uri, under which each service can be reached. In **CoreSystem.java**, the systems themselves are created with the services that are provided.  
 
 ATTENTION: C0 is the Workload Balancer, which is used to start testruns. This is the reason why it do not provide a service. 
 
@@ -1102,3 +1234,12 @@ ATTENTION: C0 is the Workload Balancer, which is used to start testruns. This is
 7. Add Functionality to C0
 8. Add Systems and Services to Arrowhead
 9. Go to [how to start](#start)
+
+
+
+
+<a name="pictures" />
+
+## Pictures final prototype
+
+
