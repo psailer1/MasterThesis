@@ -11,7 +11,7 @@ In this file the Final Prototype of the MIT 4.0 project is described. IThe Final
    * [Workload Balancer](#workload)
    * [Maven Project](#maven)
    * [Class Diagram](#class)
-   * [How to start](#start)
+   * [How to start with Github Code](#start)
 4. [How to add C0, C1 and C2](#addcomponents)
    * [Create Maven Module](#mavenmodule)
    * [Create folder Structure for Components](#folderstructure)
@@ -122,9 +122,9 @@ In this section a Class Diagram is shown, which indicates how the Controller Cla
 
 <a name="start" />
 
-### How to start 
+### How to start with Github Code
 
-1. Clone branch from Githab 
+1. Clone branch from Github 
 
 `` git clone --branch final_prototype https://github.com/igo3r/MIT4.0.git ``
 
@@ -137,7 +137,7 @@ In this section a Class Diagram is shown, which indicates how the Controller Cla
 ![XAMPP Control Panel](/images/xampp.PNG)
 
 
-4. Enter URL http://127.0.0.1/phpmyadmin/ in Browser
+4. Enter URL http://10.20.30.6/phpmyadmin/ in Browser
 
 5. Create Empty Arrowhead Database
    1. Click on SQL to enter Queries 
@@ -160,7 +160,7 @@ In this section a Class Diagram is shown, which indicates how the Controller Cla
 
   7. It can be tested by checking the SwaggerSide of the components, like shown in the Picture below for Service Registry. To go to swagger use the ip-addresses and ports from the first picture at the top of the side and put them in the URL line of the browser. If this sides are available, the systems work. 
 
-Attention: in this Branch HTTPS is used. Therefore you have to add https:// in front of the IP-Address, like https://127.0.0.1:2245, else you will get following errormessage: 
+Attention: in this Branch HTTPS is used. Therefore you have to add https:// in front of the IP-Address, like https://10.20.30.5:1235, else you will get following errormessage: 
 
 ![Error message if https:// is missing](/images/errormessageHTTPS.PNG)
 
@@ -206,7 +206,7 @@ Attention: in this Branch HTTPS is used. Therefore you have to add https:// in f
 ![Table orechstrator_store](/images/tableorchestratorstore.PNG)
 
 
-8. Now it should work. To test it enter https://127.0.0.1:2248 (C0) in the URL line of the browser to get to the Swagger of the **Arrowhead Client Core System**. 
+8. Now it should work. To test it enter https://10.20.30.23:1239 (C0) in the URL line of the browser to get to the Swagger of the **Arrowhead Client Core System**. 
 
 ![Arrowhead Client Core System](/images/clientHTTPS.PNG)
 
