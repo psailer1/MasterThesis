@@ -27,7 +27,7 @@ In this file the Final Prototype of the MIT 4.0 project is described. The Final 
    * [Add Functionality to C0](#functionalityc0)
    * [Add Systems and Services to Arrowhead Source Code](#systemsandservice)
    * [Summary](#summary1)
-7. [Summary final prototype](#pictures)
+7. [Pictures final prototype](#pictures)
 
 <a name="branches" />
 
@@ -1353,5 +1353,11 @@ ATTENTION: C0 is the Workload Balancer, which is used to start testruns. This is
 <a name="pictures" />
 
 ## Pictures final prototype
+
+The picture below shows the final prototype with all components introduced above. 
+
+![Final Prototype Big Picture](/images/leni.jpg)
+
+![Final Prototype Cycle](/images/leni1.jpg)
 
 
