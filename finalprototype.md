@@ -11,6 +11,8 @@ In this file the Final Prototype of the MIT 4.0 project is described. The Final 
    * [Workload Balancer](#workload)
    * [Maven Project](#maven)
    * [Class Diagram](#class)
+   * [Component Diagram](#component)
+   * [Summary Table](#table)
 4. [How to build the prototype](#prototype)
    * [How to setup the hardware](#hardware)
    * [How to start with Github Code](#start)
@@ -25,7 +27,7 @@ In this file the Final Prototype of the MIT 4.0 project is described. The Final 
    * [Add Functionality to C0](#functionalityc0)
    * [Add Systems and Services to Arrowhead Source Code](#systemsandservice)
    * [Summary](#summary1)
-7. [Pictures final prototype](#pictures)
+7. [Summary final prototype](#pictures)
 
 <a name="branches" />
 
@@ -101,7 +103,7 @@ The Arrowhead Framework is implemented in Java as a Maven Project, which uses th
 
 As mentioned in the [Master Branch](https://github.com/igo3r/MIT4.0) in all Use Cases only the three core systems are used. To add the components C1, C2 and C0 the the Arrowhead Maven Project, for each component a Java Maven Module Project have been created. To use the components within the project the pom.xml file has to be updated like shown in the figure below: 
 
-![pom.xml File Use Case 2](/images/mavenfinalprototype.png)
+![pom.xml File Final Prototype](/images/mavenfinalprototype.png)
 
 As shown in the figure three lines (32-34) are added to integrate the newly created Maven Module Projects to the Arrowhead root package (core).
 In the code base following names where selected: 
@@ -113,15 +115,131 @@ In the code base following names where selected:
 
 ### Class Diagram 
 
-In this section a Class Diagram is shown, which indicates how the Controller Classes of the components uses their services to implement Use Case 2:
+In this section a Class Diagram is shown, which indicates how the Controller Classes of the components uses their services to implement the Final Prototype:
 
-* C1 Controller uses *airConditioningService* which is called **turn_aircondition_on**: This component is waiting to be called by C2 to cool down the phyiscal environment, if the authorization rules allow the communication. 
-* C2 Controller uses *temperatureMeasurementService* which is called **get_temperature**: This is the Component with which the interactin of a run starts. In this Use Case C2 measures the temperature and checks whether the predefined limit of 25 degrees has been reached. It measures as long as the temperature is above this limit. If this happens, C2 consumes the *orchestrationProcess* to lookup for C1 to cool down the room. 
+* C1 Controller uses the services **turn_aircondition_on** and **turn_aircondition_off**: This component is waiting to be called by C2 to cool down the phyiscal environment, if the authorization rules allow the communication. 
+* C2 Controller uses *temperatureMeasurementService* which is called **get_temperature**: This is the Component with which the interactin of a run starts. In the final prototype C2 measures the temperature and checks whether the predefined limit of 25 degrees has been reached. It measures as long as the temperature is above this limit. If this happens, C2 consumes the *orchestrationProcess* to lookup for C1 to cool down the room. 
 * OrchestratorController uses *orchestrationProcess*: This action is called each time a component of a CPS is looking for another component or service. Therefore the request is forwarded to the Service Registry for looking up all registered systems and their services. Only if the requested service is registered, the next step is to check the authorization rules by consuming *checkAuthorizationIntraCloudRequest* service. If communication is allowed the Orechstration System return the endpoint data, so the requesting component can consume the requested service. 
 * ServiceRegistryController uses *queryRegistry*: This service is used to search in the database for existing systems and services. This service is called during the *orchestrationProcess* to find the requested system and its service(s). 
 * AuthorizationController uses *checkAutroizationIntraCloudRequest*: This serives is used to look for authorization rules to determine if two components are allowed to communicate with each other. This services is called during the *orchestrationProcess* to check, whether the requesting compontent and the requested component (in this case C1 and C2) are allowed to interact with each other. 
 
-![Class Diagram Use Case 2](/images/ClassdiagrammUC2and4andfinal.png)
+![Class Diagram Final Prototype](/images/Classdiagrammfinal.png)
+
+
+
+<a name="component" />
+
+### Component Diagram
+
+The following component diagram shows how the components within the prototype communicate and are connected with each other. 
+
+
+![Component Diagram Final Prototype](/images/component.PNG)
+
+<a name="table" />
+
+### Summary Table
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-zlqz{background-color:#c0c0c0;border-color:inherit;font-weight:bold;text-align:center;vertical-align:top}
+.tg .tg-c3ow{border-color:inherit;text-align:center;vertical-align:top}
+.tg .tg-6e8n{background-color:#c0c0c0;border-color:inherit;font-weight:bold;text-align:left;vertical-align:top}
+.tg .tg-7btt{border-color:inherit;font-weight:bold;text-align:center;vertical-align:top}
+.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+</style>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-zlqz">Bulding Blocks</th>
+    <th class="tg-6e8n">Sub Building Blocks</th>
+    <th class="tg-6e8n">Components</th>
+    <th class="tg-6e8n">Responsibilites</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-7btt">Client<br></td>
+    <td class="tg-c3ow">-</td>
+    <td class="tg-c3ow">Web Browser</td>
+    <td class="tg-0pky">• a client uses a web browser to connect to the workload controller<br>• the user configures via web browser workloads<br>• the user runs different workloads and measures their results</td>
+  </tr>
+  <tr>
+    <td class="tg-7btt">Workload <br>Balancer</td>
+    <td class="tg-c3ow">-</td>
+    <td class="tg-c3ow">C0</td>
+    <td class="tg-0pky">• provides a webservice for configuring different workloads<br>• workloads can be executed and their performance measured</td>
+  </tr>
+  <tr>
+    <td class="tg-7btt" rowspan="6">Arrowhead <br>Framework</td>
+    <td class="tg-c3ow" rowspan="2">Application <br>Systems<br>Scenario 1<br></td>
+    <td class="tg-c3ow">C1</td>
+    <td class="tg-0pky">• provides a webservice that controls an Air-Conditioning System to cool down a physical room<br>• this component initiates the duration in Scenario 1</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow">C2</td>
+    <td class="tg-0pky">• provides a webservice that controls a Temperature Sensor to measure the current temperature of a physical room<br>• this component initiates the duration in Scenario 2</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" rowspan="3">Mandatory Core <br>Systems</td>
+    <td class="tg-c3ow">Service Registry <br>System</td>
+    <td class="tg-0pky">• provides a webservice for looking up registered services within the Arrowhead local cloud</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow">Orchestrator <br>System</td>
+    <td class="tg-0pky">• provides a webservice for finding webservices (by forwarding the request to the Service Registry System) and performing an authorisation check (by consuming the webservice provided by the Authorisation System)<br>• this component handles all requests by a component within an Arrowhead local cloud</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow">Authorization <br>System </td>
+    <td class="tg-0pky">• provides a webservice for checking whether two components are authorised to interact with each other</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow">Persistence Layer</td>
+    <td class="tg-c3ow">Database</td>
+    <td class="tg-0pky">• contains all metadata about components, services, orchestration rules and authorisation rules</td>
+  </tr>
+  <tr>
+    <td class="tg-7btt" rowspan="4">Performance <br>Measurement <br>Tools</td>
+    <td class="tg-c3ow" rowspan="2">Pinpoint APM </td>
+    <td class="tg-c3ow">Pinpoint <br>Collector</td>
+    <td class="tg-0pky">• provides a webservice that can be used by a Pinpoint Agent to send performance measurement data<br>• this component collects all performance measurement data and stores it in a database</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow">Database</td>
+    <td class="tg-0pky">• contains all performance measurement data sent by each Pinpoint Agent<br>• based on a column-oriented database for handling Big Data</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow" rowspan="2">PiLogger One</td>
+    <td class="tg-c3ow">PiLogger <br>WebMonitor</td>
+    <td class="tg-0pky">• provides a webapplicaition for displaying power consumption measurement results<br>• can be used to configure the PiLogger One measurement board</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow">CSV Files</td>
+    <td class="tg-0pky">• contains all power consumption measurement results measured by a PiLogger One board</td>
+  </tr>
+  <tr>
+    <td class="tg-7btt">Admin</td>
+    <td class="tg-c3ow">-</td>
+    <td class="tg-c3ow">-</td>
+    <td class="tg-0pky">• a user with root-privileges to configure all components, run all scripts and have full control of the entire MIt 4.0 Toolset</td>
+  </tr>
+  <tr>
+    <td class="tg-7btt" rowspan="2">Scripts</td>
+    <td class="tg-c3ow">-</td>
+    <td class="tg-c3ow">Global Config Files</td>
+    <td class="tg-0pky">• provided by the Arrowhead Framework to create all necessary tables for the Arrowhead database</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow">-</td>
+    <td class="tg-c3ow"></td>
+    <td class="tg-0pky">• used to define (hardcoded) properties for each Application System<br>• these properties contain configurations and connection strings</td>
+  </tr>
+</tbody>
+</table>
 
 
 <a name="prototype" />
@@ -491,12 +609,6 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL5InnoDBDialect
 spring.jpa.show-sql=false  
 spring.jpa.properties.hibernate.format_sql=false
 spring.jpa.hibernate.ddl-auto=none
-
-server.address=127.0.0.1
-server.port=2248
-core_system_name=CLIENT
-sr_address=127.0.0.1
-sr_port=2245
 
 server.address=10.20.30.23
 server.port=1239
